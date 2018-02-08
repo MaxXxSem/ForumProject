@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Reset.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Template.css")" />
+    @RenderSection("Scripts", false)
+    @RenderSection("Styles", false)
+    <title>Forum</title>
+</head>
+<body>
+    <div id="wrap">
+        <header>
+            <a href="/Home/Index"><span id="name">Logo</span></a>
+
+            <div id="signin_and_search">
+                <div id="header_elements">
+                    @if (Session["UserId"] != null)
+                    {
+                        <a href="/Profile/ProfileView/@Session["UserId"]">@Session["UserName"]</a>
+                        <a href="/Auth/SignOut">Sign out</a>
+                    }
+                    else
+                    {
+                        <a href="/Auth/SignIn">Sign in</a>
+                    }
+                </div>
+                <form id="search" method="get" action="/Home/Search">
+                    <input type="text" placeholder="Search..." name="searchLine" />
+                    <input type="submit" value="" />
+                </form>
+            </div>
+        </header>
+
+        @RenderBody()
+    </div>
+    <footer>
+        <button id="up"></button>
+        @RenderSection("FooterScripts", false)
+        <div id="info">
+            <div id="info_content">
+                <div id="about">
+                    <h4>About us</h4>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum quod mollitia quisquam. Architecto quam in atque sint voluptatem, consequatur consectetur ab ipsum maxime quod consequuntur excepturi illum dolorem ex modi.Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer_bottom">
+            <div id="footer_bottom_content">
+                <div id="years">© 2017 Forum</div>
+                <div id="email">address@email.com</div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

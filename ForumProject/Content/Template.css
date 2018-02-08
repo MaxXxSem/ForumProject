@@ -1,0 +1,196 @@
+﻿/*background-color: #293a4a;*/
+
+html {
+    height: 100%;
+    width: 100%;
+    min-width: 750px;
+}
+
+body {
+    background-color: #fff;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    color: #424242;
+    height: inherit;
+    line-height: 1.2em;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: #478EB1;
+}
+
+a:hover {
+    color: #226A8E;
+}
+
+a:visited {
+    color: #226A8E;
+}
+
+/*HEADER****************/
+header {
+    height: 65px;
+    width: 87%;
+    white-space: nowrap;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 1px solid grey;
+}
+
+#name {
+    font-size: 2.2em;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #424242;
+    height: 30px;
+    font-weight: 900;
+    color: white;
+    margin-top: 10px;
+    padding: 10px 5px 5px 5px;
+    float: left;
+}
+
+#signin_and_search {
+    height: 65px;
+    float: right;
+    display: inline-block;
+}
+
+#search{
+    display: inline-block;
+    width: 240px;
+    background-color: #fff;
+    border: 1px solid grey;
+    margin-left: 20px;
+}
+
+#search [type="text"] {
+    border: none;
+    padding: 6px 1px 6px 1px;
+    outline: none;
+    width: 205px;
+    vertical-align: top;
+    background-color: #fff;
+}
+
+#search [type="submit"] {
+    border: none;
+    width: 20px;
+    height: 20px;
+    background: url(icons/find20.png) no-repeat 50% 50%;
+    cursor: pointer;
+    margin-top: 1px;
+    position: relative;
+    top: 2px;
+}
+
+#search [type="submit"]:hover {
+    outline: none;
+}
+
+#header_elements {
+    display: inline-block;
+    height: 100%;
+    line-height: 35px;              /*line-height of SEARCH element is changing too for some reason*/
+    padding-top: 15px;
+}
+
+#header_elements a {
+    display: inline-block;
+    color: inherit;
+    font-size: 1.2em;
+    border-left: 1px solid #c0c0c0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#header_elements a:first-child{
+    border-left: none;
+}
+
+/*WRAP******************/
+#wrap {
+    min-height: 100%;
+}
+
+/*MAIN******************/
+main {
+    padding-bottom: 332px;
+    background-color: #fff; /*f0f0f0*/
+    padding-top: 125px;
+    /*min-height: 100%;*/
+}
+
+#up {
+    display: block;
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    left: 2%;
+    bottom: 50px;
+    border: 1px solid #c0c0c0;
+    border-radius: 150px;
+    outline: none;
+    background: url(icons/up.png) #ddd no-repeat 50% 50%;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+/*FOOTER****************/
+footer {
+    margin-top: -272px;
+    clear: both;
+}
+
+#info {
+    background-color: rgba(0,0,0, 0.75);
+    color: #fff;
+    padding-top: 50px;
+    padding-bottom: 60px;
+}
+
+#info_content {
+    width: 87%;
+    margin: 0 auto;
+}
+
+#about {
+    width: 50%;
+    text-align: justify;
+}
+
+#about h4 {
+    font-size: 1.4em;
+    border-bottom: 1px solid #fff;
+    width: 50px;
+    white-space: nowrap;
+    overflow: visible;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#footer_bottom {
+    height: 40px;
+    width: 100%;
+    padding-top: 22px;
+    background-color: #2a2a2a;
+    color: #fff;
+}
+
+#footer_bottom_content {
+    width: 87%;
+    margin: 0 auto;
+}
+
+#years {
+    float: left;
+}
+
+#email {
+    float: right;
+}

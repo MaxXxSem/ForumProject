@@ -1,0 +1,2 @@
+Optimize sidebar
+Correct search form

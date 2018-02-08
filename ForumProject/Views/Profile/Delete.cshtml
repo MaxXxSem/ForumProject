@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "ConfirmationOfDeleting";
+}
+
+@section Styles{
+    <link href="@Url.Content("~/Content/DeleteProfilePage.css")" rel="stylesheet" type="text/css" />
+}
+
+<main>
+    <div id="deleting_block">
+        <p>Are you sure you want to delete the profile?</p>
+        <form method="post" action="/Auth/Delete">
+            <input type="submit" id="delete_btn" value="Yes" />
+        </form>
+        <a href="/Profile/ProfileView/@ViewBag.UserId">Cancel</a>
+    </div>
+</main>

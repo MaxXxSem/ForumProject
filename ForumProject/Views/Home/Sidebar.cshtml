@@ -1,0 +1,28 @@
+﻿<div id="sidebar">
+    <div id="sidebar_content">
+        <div class="sidebar_block">
+            <h3>Topics</h3>
+            <ul>
+                @foreach (var topics in ViewBag.Topics)
+                {
+                    <li><a href="/Topics/Subtopics/@topics.Id">@topics.Name</a></li>
+                }
+            </ul>
+        </div>
+
+        <div class="sidebar_block">
+            <h3>Most popular</h3>
+            @foreach (var record in ViewBag.PopularRecords)
+            {
+                <div class="popular_block">
+                    <div class="sidebar_popular_image">
+                        <a href="/Record/RecordView/@record.Id"><img src="~/Content/images/@record.User.MainPhoto" /></a>
+                    </div>
+                    <div class="sidebar_popular_text">
+                        <a href="/Record/RecordView/@record.Id"><h4>@record.Name</h4></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

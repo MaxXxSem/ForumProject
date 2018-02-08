@@ -1,0 +1,78 @@
+﻿main {
+    width: 87%;
+    margin: 0 auto;
+}
+
+#record_wrap {
+    /*width: 80%;*/
+    width: 70.5%;
+    float: left;
+    border-right: 1px solid #c0c0c0;
+    margin-bottom: 40px;
+    padding-right: 3.5%;
+}
+
+.record {
+    width: 100%;
+}
+
+.image_block {
+    /*-----------------------*/
+    float: left;
+}
+
+.image {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    float: left;
+    border-radius: 150px;
+}
+
+.image img {
+    width: 90px;
+    border-radius: 3px;
+}
+
+.record_content {
+    /*---------------------------*/
+    margin-left: calc(90px + 2.5%);
+}
+
+.record_content span {
+    color: #243240;
+    font-size: 1em;
+}
+
+.add_record_input {
+    width: 100%;
+    margin-bottom: 25px;
+    margin-top: 5px;
+    font-size: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5em;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+}
+
+#record_text {
+    height: 150px;
+    resize: none;
+}
+
+#new_record input[type="submit"] {
+    margin-top: -5px;
+    height: 35px;
+    width: 150px;
+    font-size: 0.9em;
+    outline: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    background-color: #dddddd;
+    float: left;
+    cursor: pointer;
+}
+
+#new_record input[type="submit"]:hover {
+    background-color: #c0c0c0;
+}

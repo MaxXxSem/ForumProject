@@ -1,0 +1,765 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ForumDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccessLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="CanAddRecord" Type="bit" Nullable="false" />
+          <Property Name="CanLike" Type="bit" Nullable="false" />
+          <Property Name="CanDeleteRecord" Type="bit" Nullable="false" />
+          <Property Name="CanDeleteUser" Type="bit" Nullable="false" />
+          <Property Name="CanBlockUser" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BlockedUsers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BlockTime" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="LikesCount" Type="int" />
+        </EntityType>
+        <EntityType Name="CommentsLikes">
+          <Key>
+            <PropertyRef Name="CommentId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="CommentId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LevelInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="RecordsBarrier" Type="int" Nullable="false" />
+          <Property Name="LikesBarrier" Type="int" Nullable="false" />
+          <Property Name="CommentsBarrier" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Records">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="1024" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="SubtopicId" Type="int" Nullable="false" />
+          <Property Name="LikesCount" Type="int" />
+        </EntityType>
+        <EntityType Name="RecordsLikes">
+          <Key>
+            <PropertyRef Name="RecordId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subscribes">
+          <Key>
+            <PropertyRef Name="SubscriberId" />
+            <PropertyRef Name="PublisherId" />
+          </Key>
+          <Property Name="SubscriberId" Type="int" Nullable="false" />
+          <Property Name="PublisherId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subtopics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" />
+          <Property Name="TopicId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Topics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="64" Nullable="false" />
+          <Property Name="LevelId" Type="int" Nullable="false" />
+          <Property Name="AccessLevelId" Type="int" Nullable="false" />
+          <Property Name="MainPhoto" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BlockedUsers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="BlockedUsers" Type="Self.BlockedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BlockedUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Records">
+          <End Role="Records" Type="Self.Records" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Records">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="RecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentsLikes_Comments">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="1" />
+          <End Role="CommentsLikes" Type="Self.CommentsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentsLikes">
+              <PropertyRef Name="CommentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CommentsLikes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="CommentsLikes" Type="Self.CommentsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CommentsLikes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Subtopics">
+          <End Role="Subtopics" Type="Self.Subtopics" Multiplicity="1" />
+          <End Role="Records" Type="Self.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subtopics">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="SubtopicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Records" Type="Self.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordsLikes_Records">
+          <End Role="Records" Type="Self.Records" Multiplicity="1" />
+          <End Role="RecordsLikes" Type="Self.RecordsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Records">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RecordsLikes">
+              <PropertyRef Name="RecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordsLikes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RecordsLikes" Type="Self.RecordsLikes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RecordsLikes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscribes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Subscribes" Type="Self.Subscribes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subscribes">
+              <PropertyRef Name="SubscriberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscribes_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Subscribes" Type="Self.Subscribes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subscribes">
+              <PropertyRef Name="PublisherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subtopics_Topics">
+          <End Role="Topics" Type="Self.Topics" Multiplicity="1" />
+          <End Role="Subtopics" Type="Self.Subtopics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topics">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subtopics">
+              <PropertyRef Name="TopicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_AccessLevel">
+          <End Role="AccessLevel" Type="Self.AccessLevel" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccessLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="AccessLevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_LevelInfo">
+          <End Role="LevelInfo" Type="Self.LevelInfo" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="LevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ForumDBModelStoreContainer">
+          <EntitySet Name="AccessLevel" EntityType="Self.AccessLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BlockedUsers" EntityType="Self.BlockedUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentsLikes" EntityType="Self.CommentsLikes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LevelInfo" EntityType="Self.LevelInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Records" EntityType="Self.Records" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecordsLikes" EntityType="Self.RecordsLikes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subscribes" EntityType="Self.Subscribes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subtopics" EntityType="Self.Subtopics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Topics" EntityType="Self.Topics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BlockedUsers_Users" Association="Self.FK_BlockedUsers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="BlockedUsers" EntitySet="BlockedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Records" Association="Self.FK_Comments_Records">
+            <End Role="Records" EntitySet="Records" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentsLikes_Comments" Association="Self.FK_CommentsLikes_Comments">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="CommentsLikes" EntitySet="CommentsLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CommentsLikes_Users" Association="Self.FK_CommentsLikes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="CommentsLikes" EntitySet="CommentsLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Subtopics" Association="Self.FK_Records_Subtopics">
+            <End Role="Subtopics" EntitySet="Subtopics" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Users" Association="Self.FK_Records_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordsLikes_Records" Association="Self.FK_RecordsLikes_Records">
+            <End Role="Records" EntitySet="Records" />
+            <End Role="RecordsLikes" EntitySet="RecordsLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordsLikes_Users" Association="Self.FK_RecordsLikes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RecordsLikes" EntitySet="RecordsLikes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscribes_Users" Association="Self.FK_Subscribes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscribes" EntitySet="Subscribes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscribes_Users1" Association="Self.FK_Subscribes_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Subscribes" EntitySet="Subscribes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subtopics_Topics" Association="Self.FK_Subtopics_Topics">
+            <End Role="Topics" EntitySet="Topics" />
+            <End Role="Subtopics" EntitySet="Subtopics" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_AccessLevel" Association="Self.FK_Users_AccessLevel">
+            <End Role="AccessLevel" EntitySet="AccessLevel" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_LevelInfo" Association="Self.FK_Users_LevelInfo">
+            <End Role="LevelInfo" EntitySet="LevelInfo" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ForumDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccessLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CanAddRecord" Type="Boolean" Nullable="false" />
+          <Property Name="CanLike" Type="Boolean" Nullable="false" />
+          <Property Name="CanDeleteRecord" Type="Boolean" Nullable="false" />
+          <Property Name="CanDeleteUser" Type="Boolean" Nullable="false" />
+          <Property Name="CanBlockUser" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_AccessLevel" FromRole="AccessLevel" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="BlockedUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BlockTime" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_BlockedUsers_Users" FromRole="BlockedUsers" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RecordId" Type="Int32" Nullable="false" />
+          <Property Name="LikesCount" Type="Int32" />
+          <NavigationProperty Name="Record" Relationship="Self.FK_Comments_Records" FromRole="Comments" ToRole="Records" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Comments_Users" FromRole="Comments" ToRole="Users" />
+          <NavigationProperty Name="UsersWhoLike" Relationship="Self.CommentsLikes" FromRole="Comments" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="LevelInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RecordsBarrier" Type="Int32" Nullable="false" />
+          <Property Name="LikesBarrier" Type="Int32" Nullable="false" />
+          <Property Name="CommentsBarrier" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_LevelInfo" FromRole="LevelInfo" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Records">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="SubtopicId" Type="Int32" Nullable="false" />
+          <Property Name="LikesCount" Type="Int32" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Records" FromRole="Records" ToRole="Comments" />
+          <NavigationProperty Name="Subtopic" Relationship="Self.FK_Records_Subtopics" FromRole="Records" ToRole="Subtopics" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Records_Users" FromRole="Records" ToRole="Users" />
+          <NavigationProperty Name="UsersWhoLike" Relationship="Self.RecordsLikes" FromRole="Records" ToRole="Users" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Subtopics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="TopicId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Records" Relationship="Self.FK_Records_Subtopics" FromRole="Subtopics" ToRole="Records" />
+          <NavigationProperty Name="Topics" Relationship="Self.FK_Subtopics_Topics" FromRole="Subtopics" ToRole="Topics" />
+        </EntityType>
+        <EntityType Name="Topics">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Subtopics" Relationship="Self.FK_Subtopics_Topics" FromRole="Topics" ToRole="Subtopics" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="64" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="MainPhoto" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="LevelId" Type="Int32" Nullable="false" />
+          <Property Name="AccessLevelId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AccessLevel" Relationship="Self.FK_Users_AccessLevel" FromRole="Users" ToRole="AccessLevel" />
+          <NavigationProperty Name="BlockedUsers" Relationship="Self.FK_BlockedUsers_Users" FromRole="Users" ToRole="BlockedUsers" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Users" FromRole="Users" ToRole="Comments" />
+          <NavigationProperty Name="LevelInfo" Relationship="Self.FK_Users_LevelInfo" FromRole="Users" ToRole="LevelInfo" />
+          <NavigationProperty Name="Records" Relationship="Self.FK_Records_Users" FromRole="Users" ToRole="Records" />
+          <NavigationProperty Name="LikedComments" Relationship="Self.CommentsLikes" FromRole="Users" ToRole="Comments" />
+          <NavigationProperty Name="LikedRecords" Relationship="Self.RecordsLikes" FromRole="Users" ToRole="Records" />
+          <NavigationProperty Name="Subscriptions" Relationship="Self.Subscribes" FromRole="Users" ToRole="Users1" />
+          <NavigationProperty Name="Subscribers" Relationship="Self.Subscribes" FromRole="Users1" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Users_AccessLevel">
+          <End Role="AccessLevel" Type="Self.AccessLevel" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccessLevel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="AccessLevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlockedUsers_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="BlockedUsers" Type="Self.BlockedUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BlockedUsers">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Records">
+          <End Role="Records" Type="Self.Records" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" >
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="Records">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="RecordId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_LevelInfo">
+          <End Role="LevelInfo" Type="Self.LevelInfo" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LevelInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="LevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Subtopics">
+          <End Role="Subtopics" Type="Self.Subtopics" Multiplicity="1" />
+          <End Role="Records" Type="Self.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subtopics">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="SubtopicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Records" Type="Self.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subtopics_Topics">
+          <End Role="Topics" Type="Self.Topics" Multiplicity="1" />
+          <End Role="Subtopics" Type="Self.Subtopics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Topics">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subtopics">
+              <PropertyRef Name="TopicId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CommentsLikes">
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+        </Association>
+        <Association Name="RecordsLikes">
+          <End Role="Records" Type="Self.Records" Multiplicity="*" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+        </Association>
+        <Association Name="Subscribes">
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <End Role="Users1" Type="Self.Users" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ForumDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccessLevel" EntityType="Self.AccessLevel" />
+          <EntitySet Name="BlockedUsers" EntityType="Self.BlockedUsers" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" />
+          <EntitySet Name="LevelInfo" EntityType="Self.LevelInfo" />
+          <EntitySet Name="Records" EntityType="Self.Records" />
+          <EntitySet Name="Subtopics" EntityType="Self.Subtopics" />
+          <EntitySet Name="Topics" EntityType="Self.Topics" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_Users_AccessLevel" Association="Self.FK_Users_AccessLevel">
+            <End Role="AccessLevel" EntitySet="AccessLevel" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlockedUsers_Users" Association="Self.FK_BlockedUsers_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="BlockedUsers" EntitySet="BlockedUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Records" Association="Self.FK_Comments_Records">
+            <End Role="Records" EntitySet="Records" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_LevelInfo" Association="Self.FK_Users_LevelInfo">
+            <End Role="LevelInfo" EntitySet="LevelInfo" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Subtopics" Association="Self.FK_Records_Subtopics">
+            <End Role="Subtopics" EntitySet="Subtopics" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Users" Association="Self.FK_Records_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subtopics_Topics" Association="Self.FK_Subtopics_Topics">
+            <End Role="Topics" EntitySet="Topics" />
+            <End Role="Subtopics" EntitySet="Subtopics" />
+          </AssociationSet>
+          <AssociationSet Name="CommentsLikes" Association="Self.CommentsLikes">
+            <End Role="Comments" EntitySet="Comments" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="RecordsLikes" Association="Self.RecordsLikes">
+            <End Role="Records" EntitySet="Records" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="Subscribes" Association="Self.Subscribes">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Users1" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ForumDBModelStoreContainer" CdmEntityContainer="ForumDBEntities">
+          <EntitySetMapping Name="AccessLevel">
+            <EntityTypeMapping TypeName="ForumDBModel.AccessLevel">
+              <MappingFragment StoreEntitySet="AccessLevel">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CanAddRecord" ColumnName="CanAddRecord" />
+                <ScalarProperty Name="CanLike" ColumnName="CanLike" />
+                <ScalarProperty Name="CanDeleteRecord" ColumnName="CanDeleteRecord" />
+                <ScalarProperty Name="CanDeleteUser" ColumnName="CanDeleteUser" />
+                <ScalarProperty Name="CanBlockUser" ColumnName="CanBlockUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BlockedUsers">
+            <EntityTypeMapping TypeName="ForumDBModel.BlockedUsers">
+              <MappingFragment StoreEntitySet="BlockedUsers">
+                <ScalarProperty Name="Id" ColumnName="id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BlockTime" ColumnName="BlockTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="ForumDBModel.Comments">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="LikesCount" ColumnName="LikesCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LevelInfo">
+            <EntityTypeMapping TypeName="ForumDBModel.LevelInfo">
+              <MappingFragment StoreEntitySet="LevelInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RecordsBarrier" ColumnName="RecordsBarrier" />
+                <ScalarProperty Name="LikesBarrier" ColumnName="LikesBarrier" />
+                <ScalarProperty Name="CommentsBarrier" ColumnName="CommentsBarrier" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Records">
+            <EntityTypeMapping TypeName="ForumDBModel.Records">
+              <MappingFragment StoreEntitySet="Records">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SubtopicId" ColumnName="SubtopicId" />
+                <ScalarProperty Name="LikesCount" ColumnName="LikesCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subtopics">
+            <EntityTypeMapping TypeName="ForumDBModel.Subtopics">
+              <MappingFragment StoreEntitySet="Subtopics">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TopicId" ColumnName="TopicId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Topics">
+            <EntityTypeMapping TypeName="ForumDBModel.Topics">
+              <MappingFragment StoreEntitySet="Topics">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ForumDBModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MainPhoto" ColumnName="MainPhoto" />
+                <ScalarProperty Name="LevelId" ColumnName="LevelId" />
+                <ScalarProperty Name="AccessLevelId" ColumnName="AccessLevelId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="CommentsLikes" TypeName="ForumDBModel.CommentsLikes" StoreEntitySet="CommentsLikes">
+            <EndProperty Name="Comments">
+              <ScalarProperty Name="Id" ColumnName="CommentId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RecordsLikes" TypeName="ForumDBModel.RecordsLikes" StoreEntitySet="RecordsLikes">
+            <EndProperty Name="Records">
+              <ScalarProperty Name="Id" ColumnName="RecordId" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Subscribes" TypeName="ForumDBModel.Subscribes" StoreEntitySet="Subscribes">
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="SubscriberId" />
+            </EndProperty>
+            <EndProperty Name="Users1">
+              <ScalarProperty Name="Id" ColumnName="PublisherId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

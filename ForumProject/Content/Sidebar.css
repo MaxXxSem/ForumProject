@@ -1,0 +1,65 @@
+#sidebar {
+    float: left;
+    height: inherit;
+    width: 25.5%;
+    color: black;
+}
+
+.sidebar_fixed {
+    position: fixed;
+    right: 3.9%;
+}
+
+.sidebar_absolute {
+    position: absolute;
+    right: 3.9%;
+}
+
+#sidebar_content {
+    padding-left: 10%;
+}
+
+.sidebar_block {
+    margin-bottom: 35px;
+}
+
+.sidebar_block a {
+    color: #424242;
+}
+
+.sidebar_block h3 {
+    color: #424242;
+    font-size: 1.4em;
+    font-weight: 900;
+    padding-bottom: 20px;
+}
+
+.sidebar_block ul li {
+    list-style-type: disc;
+    line-height: 2em;
+    position: relative;
+    left: 18px;
+}
+
+.popular_block {
+    margin-bottom: 40px;
+    overflow: hidden;
+}
+
+.sidebar_popular_image {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    float: left;
+    margin-right: 4%;
+}
+
+.sidebar_popular_image a img {
+    width: 100px;
+}
+
+.sidebar_popular_text {
+    color: #424242;
+    font-size: 1.1em;
+    line-height: 1.2;
+}

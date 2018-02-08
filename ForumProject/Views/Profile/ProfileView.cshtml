@@ -1,0 +1,271 @@
+﻿@using ForumProject.Models
+@model Users
+
+@section Scripts{    
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/Scripts/all.js")
+    @Scripts.Render("~/Scripts/likes.js")
+<!-- Change name button and change image button -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            //change image
+            try {
+                document.getElementById("change_image_btn").onchange = function (e) {
+                    this.form.submit();
+                }
+            } catch (ex) { }
+
+            //change name button click OR click beyond the input element
+            try {
+                document.onclick = function (e) {
+                    var usname = document.getElementById('username_text');
+                    var usname_input = document.getElementById('change_name_input');
+                    var change_name_button = document.getElementById('change_name');
+
+                    if (e.target == change_name_button) {
+                        usname.style.display = "none";
+                        change_name_button.style.display = "none";
+                        usname_input.value = "";
+                        usname_input.style.display = "unset";
+                    }
+                    else if (e.target != usname_input && usname_input.style.display != "none") {
+                        usname.style.display = "unset";
+                        change_name_button.style.display = "unset";
+                        usname_input.style.display = "none";
+                    }
+                }
+            } catch (ex) { }
+
+            //enter press
+            var usname = document.getElementById('username_text');
+            var usname_input = document.getElementById('change_name_input');
+            var change_name_button = document.getElementById('change_name');
+            try {
+                usname_input.onkeydown = function (e) {
+                    if (e.keyCode == 13 && usname_input.value != "") {
+                        usname.style.display = "unset";
+                        change_name_button.style.display = "unset";
+                        usname_input.style.display = "none";
+                    }
+                }
+            }catch(ex){}
+
+
+            var records_button = document.getElementById('records_button');
+            var subscriptions_button = document.getElementById('subscriptions_button');
+            var subscribers_button = document.getElementById('subscribers_button');
+            var bookmarks_button = document.getElementById('bookmarks_button');
+
+            /*Hide all blocks*/
+            function hideAll() {
+                if (records_button)
+                    records_button.style.fontWeight = "400";
+                if (subscriptions_button)
+                    subscriptions_button.style.fontWeight = "400";
+                if (subscribers_button)
+                    subscribers_button.style.fontWeight = "400";
+                if (bookmarks_button)
+                    bookmarks_button.style.fontWeight = "400";
+
+                try {
+                    document.getElementById('users_records').style.display = "none";
+                    document.getElementById('subscriptions').style.display = "none";
+                    document.getElementById('subscribers').style.display = "none";
+                    document.getElementById('bookmarks').style.display = "none";
+                } catch (ex) { }
+            }
+
+            function showBlock(button, blockId) {
+                if (button)
+                    button.style.fontWeight = "600";
+                var block;
+                if (block = document.getElementById(blockId))
+                    document.getElementById(blockId).style.display = "block";
+            }
+
+            records_button.onclick = function (e) {
+                hideAll();
+                showBlock(records_button, "users_records");
+            }
+
+            subscriptions_button.onclick = function (e) {
+                hideAll();
+                showBlock(subscriptions_button, "subscriptions");
+            }
+
+            subscribers_button.onclick = function (e) {
+                hideAll();
+                showBlock(subscribers_button, "subscribers");
+            }
+
+            try {
+                bookmarks_button.onclick = function (e) {
+                    hideAll();
+                    showBlock(bookmarks_button, "bookmarks");
+                }
+            } catch(ex) { }
+        });
+    </script>
+}
+
+@section Styles{
+    <link href="@Url.Content("~/Content/ProfileCssPage.css")" rel="stylesheet" type="text/css" />
+}
+
+<main>
+    <div id="profile_image">
+        <img src="~/Content/images/@Model.MainPhoto" />
+        <!-- CHANGE IMAGE -->
+        <!-- DELETE PROFILE/SUBSCRIBE BUTTON -->
+        @if (ViewBag.UserStatus.Equals("owner"))
+        {
+            using (Html.BeginForm("UploadImage", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", id = "change_image_form" }))
+            {
+                <label><input type="file" accept="image/jpeg, image/jpg, image/png" id="change_image_btn" name="image">Choose file</label>
+                <input type="submit" value="Change image" style="visibility: hidden" /> 
+            }
+
+            <form method="post" action="@Url.Action("Delete", "Profile")">
+                <input type="submit" class="delete_profile_btn" value="Delete profile" />
+            </form>
+        }
+        else if (ViewBag.UserStatus.Equals("user"))
+        {
+            <div id="subscribe_unsubscribe_block">
+                @if (ViewBag.IsSubscription == true)
+                {
+                    @Ajax.ActionLink("Unsubscribe", "Unsubscribe", new { id = Model.Id }, new AjaxOptions { UpdateTargetId = "subscribe_unsubscribe_block", InsertionMode = InsertionMode.Replace },
+                        new { @class = "delete_profile_btn", @id = "unsubscribe_link" })
+                }
+                else
+                {
+                    @Ajax.ActionLink("Subscribe", "Subscribe", new { id = Model.Id }, new AjaxOptions { UpdateTargetId = "subscribe_unsubscribe_block", InsertionMode = InsertionMode.Replace },
+                        new { @class = "delete_profile_btn", @id = "subscribe_link" })
+                }
+            </div>
+        }
+        else
+        {
+            <label></label>
+        }
+    </div>
+
+    <div id="right_block">
+        <div id="profile_info">
+            <div id="username">
+                <span id="username_text">@Model.Name</span>
+                @if (ViewBag.UserStatus.Equals("owner"))                        //make AJAX----------------------------------------
+                {
+                    <button id="change_name"></button>                          <!-- CHANGE NAME -->
+                    using (Ajax.BeginForm("ChangeName", new AjaxOptions { UpdateTargetId = "username_text", HttpMethod = "Post" }))
+                    {
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="text" id="change_name_input" onkeypress="c();" name="name" placeholder="Enter new name" />
+                    }
+                }
+                else
+                {
+                    <div style="display: inline-block; width: 20px;"></div>
+                }
+                <span id="records_count">Records: @Model.Records.Count</span>
+            </div>
+        </div>
+		<div id="records_subscriptions_menu">
+		    <div><button id="records_button">Records</button></div>
+		    <div><button id="subscriptions_button">Subscriptions</button></div>
+            <div><button id="subscribers_button">Subscribers</button></div>
+            @if (ViewBag.UserStatus.Equals("owner"))
+            {
+		        <div><button id="bookmarks_button">Bookmarks</button></div>
+            }
+		</div>
+        <div class="all_records" id="users_records">
+            @foreach (var record in Model.Records)
+            {
+                <div class="record_content">
+                    <h3>@record.Name</h3>
+                    <div class="date">
+                        <span>@record.Date.ToShortDateString()</span>
+                    </div>
+                    <div class="record_text">
+                        @record.Text
+                    </div>
+                    <div class="record_bottom">
+                        <span id="likes_count">@record.UsersWhoLike.Count</span>
+                        @if (Model.LikedRecords.Any(r => r.Id == record.Id))
+                        { 
+                            <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@record.Id"></button>
+                        }
+                        else
+                        {
+                            <button class="like" style="background-image: url(/Content/icons/star24.png)" value="false" name="@record.Id"></button>
+                        }
+                        <a href="/Record/RecordView/@record.Id" class="comments">Comments</a>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="subscr" id="subscriptions">
+            @foreach (var subscription in Model.Subscriptions)
+            {
+	            <div class="subscr_record">
+	                <div class="image_block">
+                        <a href="/Profile/ProfileView/@subscription.Id">
+                            <div class="image"><img src="~/Content/images/@subscription.MainPhoto" /></div>
+                        </a>
+                    </div>
+	                <a href="/Profile/ProfileView/@subscription.Id"><span class="publisher_name">@subscription.Name</span></a>
+	                <span class="publisher_level">Level: @subscription.LevelInfo.Name</span>
+	            </div>
+            }
+        </div>
+
+        <div class="subscr" id="subscribers">
+            @foreach (var subscriber in Model.Subscribers)
+            {
+                <div class="subscr_record">
+                    <div class="image_block">
+                        <a href="/Profile/ProfileView/@subscriber.Id">
+                            <div class="image"><img src="~/Content/images/@subscriber.MainPhoto" /></div>
+                        </a>
+                    </div>
+                    <a href="/Profile/ProfileView/@subscriber.Id"><span id="publisher_name">@subscriber.Name</span></a>
+                    <span id="publisher_level">Level: @subscriber.LevelInfo.Name</span>
+                </div>
+            }
+        </div>
+
+        @if (ViewBag.UserStatus.Equals("owner"))                                            //make AJAX----------------------------
+        {
+            <div class="all_records" id="bookmarks">
+                @foreach (var record in Model.LikedRecords)
+                {
+                    <div class="record_content">
+                        <h3>@record.Name</h3>
+                        <div class="date">
+                            <span>@record.Date.ToShortDateString()</span>
+                        </div>
+                        <div class="record_text">
+                            @record.Text
+                        </div>
+                        <div class="record_bottom">
+                            <span id="likes_count">@record.UsersWhoLike.Count</span>
+                            <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@record.Id"></button>
+                            <a href="/Record/RecordView/@record.Id" class="comments">Comments</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <button id="up"></button>
+</main>
+    
+@section FooterScripts {
+    <script type="text/javascript">
+            likes();
+            buttonUpSidebar();
+    </script>
+}

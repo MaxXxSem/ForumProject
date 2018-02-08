@@ -1,0 +1,132 @@
+﻿@using ForumProject.Models
+@model Records
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/all.js")
+    <script>
+        document.addEventListener("DOMContentLoaded", function commentsLikes() {
+            var likes = document.getElementsByClassName('like');
+            try {
+                for (var i = 0; i < likes.length; i++) {
+                    likes[i].addEventListener("click", function (e) {
+                        var xhttp = new XMLHttpRequest();
+                        if (e.target.value == "false") {
+                            e.target.style.backgroundImage = "url(/Content/icons/star_blue24.png)";
+                            e.target.value = true;
+                            xhttp.open('GET', '/Profile/LikeComment/' + e.target.name, true);
+                            xhttp.send();
+                        } else if (e.target.value == "true") {
+                            e.target.style.backgroundImage = "url(/Content/icons/star24.png)";
+                            e.target.value = false;
+                            xhttp.open('GET', '/Profile/UnlikeComment/' + e.target.name, true);
+                            xhttp.send();
+                        }
+                    });
+                }
+            } catch (ex) { }
+
+
+            //delete record/comment buttons
+            var deleteRecordBtn = document.getElementById('delete_record');
+            var deleteCommentBtns = document.getElementsByClassName('delete_comments');
+            if (deleteRecordBtn != null) {
+                var xhttp = new XMLHttpRequest();
+                deleteRecordBtn.onclick = function (e) {
+                    xhttp.open('GET', '/Record/DeleteRecord/' + @Model.Id, true);
+                    xhttp.send();
+                    document.location.href = "/Home/Index/";
+                }
+
+                if (deleteCommentBtns != null) {
+                    for (var i = 0; i < deleteCommentBtns.length; i++) {
+                        deleteCommentBtns[i].onclick = function (e) {
+                            xhttp.open('GET', '/Record/DeleteComment/' + e.target.value, true);
+                            xhttp.send();
+                            document.location.reload(true);
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+@section Styles{
+    <link href="@Url.Content("~/Content/RecordViewPage.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Sidebar.css")" rel="stylesheet" type="text/css" />
+}
+
+<main>
+    <div id="record_wrap">
+        <div class="record">
+            <div class="image_block">
+                <a href="/Profile/ProfileView/@Model.UserId"><div class="image"><img src="~/Content/images/@Model.User.MainPhoto" /></div></a>
+            </div>
+            <div class="record_content">
+                <h3>@Model.Name</h3>
+                @if (ViewBag.IsModerator != null && ViewBag.IsModerator == true)
+                {
+                    <button class="delete" id="delete_record"></button>
+                }
+                <div class="name_date">
+                    <span>@Model.Date.ToShortDateString()</span>
+                    <a href="/Profile/ProfileView/@Model.UserId"><div class="user_name">@Model.User.Name</div></a>
+                </div>
+                <div class="record_text">
+                    @Model.Text
+                </div>
+                <div class="comments">
+                    <h4>Comments</h4>
+                    <form method="post">
+                        <input type="hidden" name="RecordId" value="@Model.Id" />
+                        <textarea placeholder="Your comment" name="Text"></textarea>
+                        <input type="submit" value="Send" />
+                    </form>
+
+                    <!-- COMMENTS---------------------------------------------- -->
+                    @foreach (var comment in ViewBag.Comments)
+                    {
+                        <div class="record">
+                            <div class="image_block">
+                                <a href="/Profile/ProfileView/@comment.UserId"><div class="image"><img src="~/Content/images/@comment.User.MainPhoto" /></div></a>
+                            </div>
+                            <div class="record_content">
+                                <div class="name_date">
+                                    @if (ViewBag.IsModerator != null && ViewBag.IsModerator == true)
+                                    {
+                                        <button class="delete_comments" id="delete_comment" value="@comment.Id"></button>
+                                    }
+                                    <span>@comment.Date.ToShortDateString()</span>
+                                    <a href="/Profile/ProfileView/@comment.UserId"><div class="user_name">@comment.User.Name</div></a>
+                                </div>
+                                <div class="record_text">
+                                    @comment.Text
+                                </div>
+                                <div class="record_bottom">
+                                    <span id="likes_count">@comment.UsersWhoLike.Count</span>
+                                    @if (ViewBag.LikedComments != null && (ViewBag.LikedComments as List<Comments>).Any(r => r.Id == comment.Id))
+                                    {
+                                        <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@comment.Id"></button>
+                                    }
+                                    else
+                                    {
+                                        <button class="like" style="background-image: url(/Content/icons/star24.png)" value="false" name="@comment.Id"></button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{Html.RenderAction("Sidebar", "Home");}
+
+</main>
+
+@section FooterScripts{
+    <script>
+        buttonUpSidebar();
+    </script>
+}

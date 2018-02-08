@@ -1,0 +1,62 @@
+﻿main {
+    width: 100%;
+}
+
+#deleting_block {    
+    width: 29%;
+    margin: 30px auto 50px auto;
+    padding: 40px 4% 70px 4%;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+#deleting_block p {
+    font-size: 1.4em;
+    width: 50px;    
+    white-space: nowrap;
+    overflow: visible;
+    margin-bottom: 50px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid grey;
+}
+
+#deleting_block form input[type=submit] {
+    margin-top: -5px;
+    line-height: 1.8em;
+    width: 35%;
+    height: 35px;
+    font-size: 1.05em;
+    outline: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    background-color: #dddddd;
+    color: #000;
+    float: left;
+    cursor: pointer;
+}
+
+#deleting_block form input[type=submit]:hover {
+    background-color: #c0c0c0;
+}
+
+#deleting_block a {
+    margin-top: -5px;
+    float: right;
+    line-height: 1.8em;
+    width: 35%;
+    height: 33px;
+    text-align: center;
+    font-size: 1.1em;
+    outline: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    background-color: #dddddd;
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
+}
+
+#deleting_block a:hover {
+    color: #000;
+    background-color: #c0c0c0;
+}

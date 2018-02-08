@@ -1,0 +1,72 @@
+﻿@using ForumProject.Models
+@model IEnumerable<Records>
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/all.js")
+    @Scripts.Render("~/Scripts/likes.js")
+}
+
+@section Styles{
+    <link href="@Url.Content("~/Content/IndexCssPage.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Sidebar.css")" rel="stylesheet" type="text/css" />
+}
+
+<div id="header_bottom">
+    <div id="header_bottom_text">
+        <h1>Connect<br /> Your Ideas</h1>
+    </div>
+</div>
+
+<main>
+    <div id="records">
+    @if ((Model as IEnumerable<Records>).Count() == 0)
+    {
+        <div><span>Empty...</span></div>
+    }
+    else
+    {
+        foreach (var record in Model)
+        {
+            <div class="record">
+                <div class="image_block">
+                    <a href="/Profile/ProfileView/@record.UserId"><div class="image"><img src="~/Content/images/@record.User.MainPhoto" /></div></a>
+                </div>
+                <div class="record_content">
+                    <h3>@record.Name</h3>
+                    <div class="name_date">
+                        <span>@record.Date.ToShortDateString()</span>
+                        <a href="/Profile/ProfileView/@record.UserId"><div class="user_name">@record.User.Name</div></a>
+                    </div>
+                    <div class="record_text">
+                        @record.Text
+                    </div>
+                    <div class="record_bottom">
+                        <span id="likes_count">@record.UsersWhoLike.Count</span>
+                        @if (ViewBag.LikedRecords != null && (ViewBag.LikedRecords as List<Records>).Any(r => r.Id == record.Id))
+                        {
+                            <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@record.Id"></button>
+                        }
+                        else
+                        {
+                            <button class="like" style="background-image: url(/Content/icons/star24.png)" value="false" name="@record.Id"></button>
+                        }
+                        <a href="/Record/RecordView/@record.Id" class="comments">Comments</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    </div>
+
+    @{Html.RenderAction("Sidebar", "Home");}
+
+    <script type="text/javascript">
+        likes();
+    </script>
+</main>
+
+@section FooterScripts {
+    <script type="text/javascript">
+            buttonUpSidebar();
+    </script>
+}

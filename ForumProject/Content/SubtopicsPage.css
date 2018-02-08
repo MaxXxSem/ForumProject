@@ -1,0 +1,57 @@
+﻿main {
+    width: 87%;
+    margin: 0 auto;
+}
+#subtopics_caption {
+    color: #424242;
+    font-size: 1.8em;
+    font-weight: 900;
+   margin-bottom: 50px;
+}
+
+#subtopics {
+    /*width: 80%;*/
+    width: 70.5%;
+    float: left;
+    border-right: 1px solid #c0c0c0;
+    margin-bottom: 40px;
+    padding-right: 3.5%;
+}
+
+.subtopics_record {
+    padding-bottom: 30px;
+    border-bottom: 1px solid #c0c0c0;
+    margin-bottom: 20px;
+}
+
+.subtopics_record:last-child {
+    border-bottom: none;
+}
+
+.subtopics_record span {
+    color: #424242;
+    display: inline-block;
+    width: 200px;
+    font-size: 1.3em;
+    line-height: 30px;
+    margin-top: 5px;
+}
+
+#add_to_subtopic {
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    color: #243240;
+    cursor: pointer;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #c0c0c0;
+    float: right;
+    margin-top: 10px;
+}
+
+#add_record:hover{
+    color: #436EEE;
+}
+
+#add_record:visited{
+    color: #243240;
+}

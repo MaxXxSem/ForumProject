@@ -1,0 +1,40 @@
+﻿@using ForumProject.Models;
+@model Users
+
+@section Scripts{
+    @Scripts.Render("~/Scripts/all.js")
+}
+
+@section Styles{
+    <link href="@Url.Content("~/Content/AddRecord.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Sidebar.css")" rel="stylesheet" type="text/css" />
+}
+
+<main>
+    <div id="record_wrap">
+        <div class="record">
+            <div class="image_block">
+                @if (Model != null)
+                {
+                    <a href="/Profile/ProfileView/@Session["UserId"]">
+                        <div class="image">
+                            <img src="~/Content/images/@Model.MainPhoto" />
+                        </div>
+                    </a>
+                }
+            </div>
+            <div class="record_content">
+                <form id="new_record" method="post">
+                    <input type="hidden" value="@ViewBag.SubtopicId" name="SubtopicId" />
+                    <span>Record name</span>
+                    <input class="add_record_input" id="record_name" type="text" name="Name" />
+                    <span>Record text</span>
+                    <textarea class="add_record_input" id="record_text" name="Text"></textarea>
+                    <input type="submit" value="Send" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @{Html.RenderAction("Sidebar", "Home");}
+</main>

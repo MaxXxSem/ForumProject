@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ad882d4fb4064481ab9e4180652d80f6" Name="Diagram1" ZoomLevel="83">
+        <EntityTypeShape EntityType="ForumDBModel.AccessLevel" Width="1.5" PointX="5.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.BlockedUsers" Width="1.5" PointX="3.375" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.Comments" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.LevelInfo" Width="1.5" PointX="3.625" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.Records" Width="1.5" PointX="9.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.Subtopics" Width="1.5" PointX="11.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.Topics" Width="1.5" PointX="11.625" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForumDBModel.Users" Width="1.5" PointX="7.25" PointY="2.5" IsExpanded="true" />
+        <AssociationConnector Association="ForumDBModel.FK_Users_AccessLevel" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_BlockedUsers_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_Comments_Records" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_Comments_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_Users_LevelInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_Records_Subtopics" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_Records_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.FK_Subtopics_Topics" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.CommentsLikes" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.RecordsLikes" ManuallyRouted="false" />
+        <AssociationConnector Association="ForumDBModel.Subscribes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

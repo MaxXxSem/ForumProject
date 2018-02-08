@@ -1,0 +1,42 @@
+﻿@section Scripts{
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @Scripts.Render("~/Scripts/signInUp.js")
+    <script>
+        function OnComplete(res, status) {
+            if (res.responseText == "true") {
+                document.location.href = "/Auth/SignIn";
+            } else {
+                document.getElementById('message_wrong').innerHTML = "";
+                document.getElementById('message_wrong').innerHTML = "Such login already exists <br/>";
+            }
+        }
+    </script>
+}
+
+@section Styles{
+    <link href="@Url.Content("~/Content/SigninupPage.css")" rel="stylesheet" type="text/css" />
+}
+
+<main>
+    <div id="form_content">
+        <h3>Sign up</h3>
+        <div id="message_wrong" style="color: red"></div>            <!-- Wrong login or password message -->
+        @using (Ajax.BeginForm("SignUp", null, new AjaxOptions { HttpMethod = "Post", OnComplete = "OnComplete" }, new { @name="_form"}))
+        {
+            <span>Enter your name</span> <br />
+            <input type="text" class="input_text" name="Name" /> <br />
+            <span>Enter your login</span> <br />
+            <input type="text" class="input_text" name="Login" /> <br />
+            <span>Enter your password</span> <br />
+            <input type="password" class="input_text" name="Password" /> <br />
+            <span>Confirm your password</span> <br />
+            <input type="password" class="input_text" /> <br />
+            <input type="submit" value="Create account "/>
+        }
+    </div>
+
+    <script>
+        checkData();
+    </script>
+</main>

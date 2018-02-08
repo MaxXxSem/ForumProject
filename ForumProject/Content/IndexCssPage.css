@@ -1,0 +1,139 @@
+﻿#header_bottom {
+    height: 400px;
+    background: url(images/bg2.jpg) no-repeat 50% 40%;
+    background-size: cover;
+}
+
+#header_bottom_text {
+    position: absolute;
+    top: 150px;
+    right: 12%;
+    text-align: right;
+}
+
+#header_bottom_text h1 {
+    font-weight: 900;
+    width: 500px;
+    line-height: 1.3em;
+    font-size: 4em;
+}
+
+main {
+    width: 87%;
+    padding-top: 0;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 1px solid grey;
+    padding-top: 55px;
+}
+
+#records {
+    min-width: 74%;
+    max-width: 74%;
+    min-height: 800px;
+    float: left;
+    border-right: 1px solid #c0c0c0;
+    margin-bottom: 40px;
+}
+
+.record {
+    padding: 0px 5% 20px 0;
+    margin-bottom: 40px;
+}
+
+.image_block {
+    /*-----------------------*/
+    float: left;
+}
+
+.image {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    float: left;
+    border-radius: 150px;
+}
+
+.image img {
+    width: 90px;
+    border-radius: 3px;
+}
+
+.record_content {
+    /*---------------------------*/
+    margin-left: calc(90px + 2.5%);
+}
+
+.record:last-child {
+    margin-bottom: 0;
+}
+
+.record_content h3 {
+    margin: 0 0 15px 0;
+    color: #424242;
+    font-size: 1.4em;
+    font-weight: 900;
+}
+
+.name_date {
+    margin-bottom: 15px;
+}
+
+.record_content span {
+    float: right;
+    font-size: 0.9em;
+}
+
+.user_name {
+    font-style: italic;
+    color: #424242;
+    display: inline-block;
+    width: 200px;
+}
+
+.record_text {
+    margin-bottom: 10px;
+    line-height: 1.4em;
+    text-align: justify;
+}
+
+.record_bottom {
+    padding-top: 7px;
+    border-top: 1px solid #cfcfcf;
+}
+
+#likes_count {
+    float: left;
+    color: #000;
+    font-size: 1.2em;
+    margin-right: 1%;
+    padding-top: 4px;
+}
+
+.like {
+    width: 24px;
+    height: 24px;
+    border: none;
+    outline: none;
+    float: left;
+    background: url(icons/star24.png) no-repeat 50% 50%;
+    cursor: pointer;
+}
+
+.comments {
+    float: right;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    color: #243240;
+    cursor: pointer;
+    padding: 1px 0;
+}
+
+.comments:hover {
+    color: #436EEE;
+}
+
+.comments:visited {
+    color: #243240;
+}

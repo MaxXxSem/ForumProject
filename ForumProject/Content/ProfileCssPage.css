@@ -1,0 +1,294 @@
+﻿main {
+    min-height: 300px;
+    width: 87%;
+    margin: 0 auto;
+}
+
+#profile_image {
+    float: left;
+    width: 19%;
+}
+
+#profile_image img {
+    width: 100%;
+    /*background: url(../images/2.jpg) 50% 50%;*/
+    display: block;
+}
+
+#profile_image label {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    margin: 5px auto;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    background-color: rgba(1, 1, 1, 0);
+    font-size: 0.9em;
+    color: #243240;
+    cursor: pointer;
+}
+
+#profile_image label:hover {
+    background-color: #ddd;
+    border: 1px solid #c0c0c0;
+}
+
+#change_image_btn {
+    display: none;
+}
+
+#change_image_btn:hover {
+    color: #436EEE;
+}
+
+.delete_profile_btn {
+    display: block;
+    margin-top: 30px;
+    height: 35px;
+    width: 75%;
+    font-size: 0.9em;
+    outline: none;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    background-color: #dddddd;
+    color: #000;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.delete_profile_btn:hover {
+    color: #000;
+    background-color: #c0c0c0;
+}
+
+.delete_profile_btn:visited {
+    color: #000;
+    background-color: #dddddd;
+}
+
+#subscribe_link, #unsubscribe_link {
+    line-height: 1.3em;
+}
+
+#right_block {
+    display: inline-block;
+    /*padding-left: 5%;*/
+    width: 80%;
+    float: right;
+}
+
+#username {
+    margin-bottom: 30px;
+}
+
+#profile_info {
+    margin-left: 5%;
+}
+
+#username_text {
+    color: #243240;
+    font-size: 2em;
+    font-style: italic;
+    display: inline-block;
+    padding-top: 5px;
+    margin-right: 30px;
+    float: left;
+}
+
+#change_name_input {
+    width: 50%;
+    margin-bottom: 25px;
+    margin-top: 5px;
+    font-size: 1em;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5em;
+    border: 1px solid #c0c0c0;
+    border-radius: 3px;
+    display: none;
+}
+
+#change_name {
+    border: none;
+    outline: none;
+    background: url(icons/settings20.png) no-repeat 50% 50%;
+    height: 20px;
+    width: 20px;
+    padding-top: 30px;
+    cursor: pointer;
+}
+
+#records_count {
+    float: right;
+    color: #243240;
+    font-size: 1.3em;
+    padding-top: 5px;
+}
+
+#records_subscriptions_menu {
+    width: 95%;
+    margin-left: 5%;
+    margin-bottom: 10px;
+}
+
+#records_subscriptions_menu div {
+    display: inline-block;
+    border-right: 1px solid #c0c0c0;
+    margin-right: 5px;
+}
+
+#records_subscriptions_menu div:last-child {
+    border-right: none;
+}
+
+#records_subscriptions_menu div button {
+    color: inherit;
+    font-size: 1.2em;
+    outline: none;
+    border: none;
+    background: rgba(1, 1, 1, 0);
+    padding-right: 10px;
+    padding-left: 0;
+    cursor: pointer;
+}
+
+#records_button {
+    font-weight: 600;
+}
+
+.all_records {
+    width: 95%;
+    margin-bottom: 60px;
+    margin-left: 5%;
+}
+
+.record_content {
+    border: 1px solid #c0c0c0;
+    padding: 25px 2% 45px 2%;
+    margin-bottom: 20px;
+}
+
+.record_content h3 {
+    margin: 0 0 15px 0;
+    color: #424242;
+    font-size: 1.4em;
+    font-weight: 900;
+    float: left;
+}
+
+.date {
+    margin-bottom: 15px;
+    float: right;
+}
+
+.record_content span {
+    font-size: 0.9em;
+}
+
+.record_text {
+    clear: left;
+    margin-bottom: 10px;
+    line-height: 1.4em;
+    text-align: justify;
+}
+
+.record_bottom {
+    padding-top: 7px;
+    border-top: 1px solid #cfcfcf;
+}
+
+#likes_count {
+    float: left;
+    color: #000;
+    font-size: 1.2em;
+    margin-right: 1%;
+    padding-top: 4px;
+}
+
+.like {
+    width: 24px;
+    height: 24px;
+    border: none;
+    outline: none;
+    float: left;
+    background: url(icons/star24.png) no-repeat 50% 50%;
+    cursor: pointer;
+}
+
+.like:hover {
+    background-color: #fff;
+}
+
+.comments {
+    float: right;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    color: #243240;
+    cursor: pointer;
+    padding: 1px 0;
+}
+
+.comments:hover {
+    color: #436EEE;
+}
+
+.comments:visited {
+    color: #243240;
+}
+
+.subscr {
+    width: 95%;
+    margin: 20px 0 60px 5%;
+    display: none;
+}
+
+.subscr_record {
+    padding-bottom: 50px;
+    border-bottom: 1px solid #c0c0c0;
+    margin-bottom: 25px;
+}
+
+.subscr_record:last-child {
+    border-bottom: none;
+}
+
+.subscr_record .image_block {
+    /*-----------------------*/
+    float: left;
+}
+
+.subscr_record .image {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    float: left;
+    border-radius: 150px;
+}
+
+.subscr_record .image img {
+    width: 60px;
+    border-radius: 3px;
+}
+
+.subscr_record span {
+    color: #424242;
+    display: inline-block;
+    width: 200px;
+    font-size: 1.5em;
+    line-height: 30px;
+    margin-top: 5px;
+}
+
+.publisher_name {
+    font-style: italic;
+    margin-left: 5%;
+}
+
+.publisher_level {
+    margin-left: 20%;
+}
+
+#bookmarks {
+    display: none;
+}

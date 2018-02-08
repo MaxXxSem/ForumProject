@@ -1,0 +1,27 @@
+﻿@using ForumProject.Models
+@model IEnumerable<Subtopics>
+
+@section Styles{
+    <link href="@Url.Content("~/Content/Sidebar.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/SubtopicsPage.css")" rel="stylesheet" type="text/css" />
+}
+
+@{
+    ViewBag.Title = "Subtopics";
+}
+
+<main>
+    <h3 id="subtopics_caption">Subtopics</h3>
+    <div id="subtopics">
+        @foreach (var sub in Model)
+        {
+            <div class="subtopics_record">
+                <a href="/Topics/SubtopicsRecords/@sub.Id" id="all_subtopic_records"><span id="subtopic_name">@sub.Name</span></a>
+                <a href="/Record/AddRecord/@sub.Id" id="add_to_subtopic">Add record</a>
+            </div>
+        }
+    </div>
+
+    @{Html.RenderAction("Sidebar", "Home");}
+
+</main>

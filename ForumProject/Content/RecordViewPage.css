@@ -1,0 +1,180 @@
+﻿main {
+    width: 87%;
+    margin: 0 auto;
+}
+
+#record_wrap {
+    /*width: 80%;*/
+    min-width: 70.5%;
+    max-width: 70.5%;
+    min-height: 800px;
+    float: left;
+    border-right: 1px solid #c0c0c0;
+    margin-bottom: 40px;
+    padding-right: 3.5%;
+}
+
+.record {
+    width: 100%;
+}
+
+.image_block {
+    /*-----------------------*/
+    float: left;
+}
+
+.image {
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    float: left;
+    border-radius: 150px;
+}
+
+.image img {
+    width: 90px;
+    border-radius: 3px;
+}
+
+.record_content {
+    /*---------------------------*/
+    margin-left: calc(90px + 2.5%);
+}
+
+.record:last-child {
+    margin-bottom: 0;
+}
+
+.record_content h3 {
+    margin: 0 0 15px 0;
+    color: #424242;
+    font-size: 1.4em;
+    font-weight: 900;
+    display: inline-block;
+}
+
+.delete {
+    border: none;
+    outline: none;
+    background-color: #fff;
+    background-image: url(icons/close.png);
+    float: right;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    margin-left: 2%;
+}
+
+.name_date {
+    margin-bottom: 15px;
+}
+
+.record_content span {
+    float: right;
+    font-size: 0.9em;
+}
+
+.user_name {
+    font-style: italic;
+    color: #424242;
+    display: inline-block;
+    width: 200px;
+}
+
+.record_text {
+    line-height: 1.4em;
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
+/*COMMENTS*/
+.comments h4 {
+    width: 100%;
+    border-top: 1px solid #c0c0c0;
+    padding: 15px 0;
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+.comments textarea {
+    width: 100%;
+    height: 50px;
+    resize: none;
+    border: 1px solid #c0c0c0;
+}
+
+.comments form input[type="submit"] {
+    margin-bottom: 25px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    width: 70px;
+    height: 25px;
+    background-color: #dddddd;
+    font-size: 0.9em;
+    color: #243240;
+    cursor: pointer;
+}
+
+.delete_comments {
+    border: none;
+    outline: none;
+    background-color: #fff;
+    background-image: url(icons/close.png);
+    float: right;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    margin-left: 2%;
+}
+
+.comments form input[type="submit"]:hover {
+    background-color: #c0c0c0;
+}
+
+.comments .record {
+    margin-bottom: 50px;
+}
+
+.comments .record .record_content .name_date {
+    margin-bottom: 5px;
+}
+
+.comments .record .image_block .image {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    float: left;
+}
+
+.comments .record .image_block .image img {
+    width: 60px;
+    border-radius: 150px;
+}
+
+.comments .record .record_content {
+    margin-left: calc(60px + 2.5%)
+}
+
+.record_bottom {
+    padding-top: 7px;
+    border-top: 1px solid #cfcfcf;
+}
+
+#likes_count {
+    float: left;
+    color: #000;
+    font-size: 1.2em;
+    margin-right: 1%;
+    padding-top: 4px;
+}
+
+.like {
+    width: 24px;
+    height: 24px;
+    border: none;
+    outline: none;
+    float: left;
+    background: url(icons/star24.png) no-repeat 50% 50%;
+    cursor: pointer;
+}
