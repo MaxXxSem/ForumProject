@@ -29,7 +29,7 @@ namespace ForumProject.Controllers
             IEnumerable<Records> records;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                records = entities.Records.Include(r => r.Subtopic).Where(r => r.Subtopic.Id == Id).Include(r => r.User).ToList();
+                records = entities.Records.Include(r => r.Subtopic).Where(r => r.Subtopic.Id == Id).Include(r => r.User).Include(r => r.UsersWhoLike).ToList();
             }
 
             return View("~/Views/Home/Index.cshtml", records);
