@@ -3,28 +3,11 @@
 
 @section Scripts{
     @Scripts.Render("~/Scripts/all.js")
+    @Scripts.Render("~/Scripts/likes.js")
     <script>
         document.addEventListener("DOMContentLoaded", function commentsLikes() {
-            var likes = document.getElementsByClassName('like');
-            try {
-                for (var i = 0; i < likes.length; i++) {
-                    likes[i].addEventListener("click", function (e) {
-                        var xhttp = new XMLHttpRequest();
-                        if (e.target.value == "false") {
-                            e.target.style.backgroundImage = "url(/Content/icons/star_blue24.png)";
-                            e.target.value = true;
-                            xhttp.open('GET', '/Profile/LikeComment/' + e.target.name, true);
-                            xhttp.send();
-                        } else if (e.target.value == "true") {
-                            e.target.style.backgroundImage = "url(/Content/icons/star24.png)";
-                            e.target.value = false;
-                            xhttp.open('GET', '/Profile/UnlikeComment/' + e.target.name, true);
-                            xhttp.send();
-                        }
-                    });
-                }
-            } catch (ex) { }
-
+            
+            likes("Comment");
 
             //delete record/comment buttons
             var deleteRecordBtn = document.getElementById('delete_record');

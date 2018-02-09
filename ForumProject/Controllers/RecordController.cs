@@ -110,7 +110,7 @@ namespace ForumProject.Controllers
                     entities.SaveChanges();
                 }
 
-                return RecordView(comment.RecordId);
+                return RedirectToAction("RecordView", "Record", comment.RecordId);      //to avoid resending form after page reloading
             }
         }
 

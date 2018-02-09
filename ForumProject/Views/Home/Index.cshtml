@@ -4,6 +4,12 @@
 @section Scripts{
     @Scripts.Render("~/Scripts/all.js")
     @Scripts.Render("~/Scripts/likes.js")
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            likes("Record");
+        });
+    </script>
 }
 
 @section Styles{
@@ -59,10 +65,6 @@
     </div>
 
     @{Html.RenderAction("Sidebar", "Home");}
-
-    <script type="text/javascript">
-        likes();
-    </script>
 </main>
 
 @section FooterScripts {

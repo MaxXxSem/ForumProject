@@ -161,7 +161,7 @@
                     using (Ajax.BeginForm("ChangeName", new AjaxOptions { UpdateTargetId = "username_text", HttpMethod = "Post" }))
                     {
                         <input type="hidden" name="id" value="@Model.Id" />
-                        <input type="text" id="change_name_input" onkeypress="c();" name="name" placeholder="Enter new name" />
+                        <input type="text" id="change_name_input" onkeypress="" name="name" placeholder="Enter new name" />
                     }
                 }
                 else
