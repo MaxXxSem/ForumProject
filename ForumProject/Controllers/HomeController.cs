@@ -44,12 +44,9 @@ namespace ForumProject.Controllers
         }
 
         /*Search*/
-        [ValidateInput(false)]
         public ActionResult Search(string searchLine)
         {
             IEnumerable<Records> records;
-            Regex regex = new Regex(@"<[\w]+>", RegexOptions.IgnoreCase);
-            searchLine = regex.Replace(searchLine, "");
             if (!searchLine.Equals(""))
             {
                 using (ForumDBEntities entities = new ForumDBEntities())
