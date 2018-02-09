@@ -19,8 +19,13 @@ namespace ForumProject.Controllers
             ViewBag.SubtopicId = Id;
 
             Users user = null;
+
             //identify user
-            if (Session["UserId"] != null)
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("SignIn", "Auth");
+            }
+            else
             {
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {

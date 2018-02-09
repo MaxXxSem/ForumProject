@@ -1,5 +1,4 @@
 Fix:
-- subtopics
 - add record reference
 - likes
 - change name in the header after changing on profile page
@@ -8,6 +7,7 @@ Fix:
 - database Recovery Pending
 - comments adding after page reloading
 - profile deleting
+- redirect to SingIn page if unavailable access
 
 
 
