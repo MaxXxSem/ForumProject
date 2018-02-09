@@ -1,5 +1,4 @@
 Fix:
-- add record reference
 - likes
 - change name in the header after changing on profile page
 - subscribers style sheet
