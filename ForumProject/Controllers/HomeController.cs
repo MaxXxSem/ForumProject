@@ -5,19 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
 using System.Data.Entity;
-using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ForumProject.Controllers
 {
     public class HomeController : Controller
     {
         //Index page
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             IEnumerable<Records> records;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                records = entities.Records.Include(p => p.User).Include(p => p.UsersWhoLike).OrderByDescending(p => p.Date).ToList();
+                records = await entities.Records.Include(p => p.User).Include(p => p.UsersWhoLike).OrderByDescending(p => p.Date).ToListAsync();
 
                 if (Session["UserId"] != null)
                 {

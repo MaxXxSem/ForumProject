@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
 using System.Data.Entity;
+using System.Threading.Tasks;
 
 namespace ForumProject.Controllers
 {
@@ -13,7 +14,7 @@ namespace ForumProject.Controllers
         /*Show profile page
         Id - publisher id
         */
-        public ActionResult ProfileView(int Id)
+        public async Task<ActionResult> ProfileView(int Id)
         {
             //CHECK GUEST IN AddRecordbtn
             var userId = Session["UserId"];
@@ -36,10 +37,11 @@ namespace ForumProject.Controllers
             Users user;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                user = entities.Users.Where(u => u.Id == Id).Include(u => u.Records.Select(r => r.UsersWhoLike))
+                var usersList = await entities.Users.Where(u => u.Id == Id).Include(u => u.Records.Select(r => r.UsersWhoLike))
                     .Include(u => u.LikedRecords.Select(r => r.UsersWhoLike))
                     .Include(u => u.Subscriptions.Select(s => s.LevelInfo))
-                    .Include(u => u.Subscribers.Select(s => s.LevelInfo)).ToList().First();
+                    .Include(u => u.Subscribers.Select(s => s.LevelInfo)).ToListAsync();
+                user = usersList.First();
 
                 //check user in subscriptions
                 if (ViewBag.UserStatus.Equals("user") && userId != null && entities.Users.Find(userId).Subscriptions.Any(u => u.Id == Id))
