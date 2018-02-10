@@ -186,6 +186,7 @@
       <DependentUpon>ForumDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Popular.cs" />
+    <Compile Include="Models\Profile.cs" />
     <Compile Include="Models\Records.cs">
       <DependentUpon>ForumDbModel.tt</DependentUpon>
     </Compile>

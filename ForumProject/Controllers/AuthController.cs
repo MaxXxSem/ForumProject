@@ -28,6 +28,8 @@ namespace ForumProject.Controllers
                     var user = entities.Users.Where(u => u.Login == login).First();
                     Session["UserId"] = user.Id;     //write Id into Session
                     Session["UserName"] = user.Name;
+
+                    new Profile().CheckLevelInfo(entities, user.Id);
                 }
 
                 return Json(true);
