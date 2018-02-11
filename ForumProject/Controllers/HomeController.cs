@@ -11,7 +11,7 @@ namespace ForumProject.Controllers
 {
     public class HomeController : Controller
     {
-        //Index page
+        //Index page with all records list
         public async Task<ActionResult> Index()
         {
             IEnumerable<Records> records;
@@ -43,7 +43,7 @@ namespace ForumProject.Controllers
             return PartialView();
         }
 
-        /*Search*/
+        //Search by keyword
         public ActionResult Search(string searchLine)
         {
             IEnumerable<Records> records;

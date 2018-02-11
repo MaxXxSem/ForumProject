@@ -5,8 +5,10 @@ using System.Web;
 
 namespace ForumProject.Models
 {
+    //Provides methods for login and registration
     public class SignInUp
     {
+        //check user login and password
         public bool TrySignIn(string login, string password)
         {
             bool result;
@@ -25,6 +27,7 @@ namespace ForumProject.Models
             return result;
         }
 
+        //tries to sign up user
         public bool TrySignUp(string login)
         {
             bool result = true;

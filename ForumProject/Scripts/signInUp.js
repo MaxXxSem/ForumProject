@@ -1,13 +1,10 @@
-// JavaScript source code
-//проверка данных полей ввода
+//check SignIn/SignUp data after submitting
 function checkData() {
     document.getElementsByName("_form")[0].onsubmit = function (e) {
-        //var login_text = document.getElementById("login_txt").value;
-        //login_text = login_text.trim();
         var fields = document.getElementsByClassName("input_text");
         for (var i = 0; i < fields.length; i++) {
             if (fields[i].value != "") {
-                var regexp = /[^\d\w]+/i;                               //что-либо кроме букв и цифр
+                var regexp = /[^\d\w]+/i;                               //anything except of characters and numbers
                 if (fields[i].value.trim().search(regexp) != -1) {
                     fields[i].style.borderColor = "red";
                     e.preventDefault();

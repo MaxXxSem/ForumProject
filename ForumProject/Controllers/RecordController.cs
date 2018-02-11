@@ -92,6 +92,7 @@ namespace ForumProject.Controllers
             return View(record);
         }
 
+        //Add comment
         [HttpPost]
         public ActionResult RecordView(Comments comment)
         {
@@ -114,7 +115,9 @@ namespace ForumProject.Controllers
             }
         }
 
-        /*id - record id*/
+        /* Delete record
+         * id - record id
+         */
         public ActionResult DeleteRecord(int id)
         {
             using (ForumDBEntities entities = new ForumDBEntities())
@@ -127,7 +130,9 @@ namespace ForumProject.Controllers
             return new EmptyResult();
         }
 
-        /*id - comment id*/
+        /* Delete comment
+         * id - comment id
+         */
         public ActionResult DeleteComment(int id)
         {
             using (ForumDBEntities entities = new ForumDBEntities())

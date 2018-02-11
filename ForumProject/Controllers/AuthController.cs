@@ -26,7 +26,7 @@ namespace ForumProject.Controllers
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {
                     var user = entities.Users.Where(u => u.Login == login).First();
-                    Session["UserId"] = user.Id;     //write Id into Session
+                    Session["UserId"] = user.Id;                                            //write Id into Session
                     Session["UserName"] = user.Name;
 
                     new Profile().CheckLevelInfo(entities, user.Id);
@@ -93,22 +93,22 @@ namespace ForumProject.Controllers
         [HttpPost]
         public ActionResult Delete()
         {
-            if (Session["UserId"] != null)                                  //if user is autorized
+            if (Session["UserId"] != null)                                              //if user is autorized
             {
                 var userId = int.Parse(Session["UserId"].ToString());
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {
-                    var user = entities.Users.Where(u => u.Id == userId).First();                 //check user in database
+                    var user = entities.Users.Where(u => u.Id == userId).First();       //check user in database
                     if (user != null)
                     {
-                        entities.Users.Remove(user);                        //remove user from db
+                        entities.Users.Remove(user);                                    //remove user from db
                         entities.SaveChanges();
                         Session["UserId"] = null;
                         Session["UserName"] = null;
                     }
                 }
 
-                return RedirectToAction("Index", "Home");                   //move to index page
+                return RedirectToAction("Index", "Home");                               //move to index page
             }
             else
             {

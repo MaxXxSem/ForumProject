@@ -10,11 +10,11 @@ namespace ForumProject.Controllers
 {
     public class TopicsController : Controller
     {
-        //Show subtopics in certain topics
+        //Show subtopics in certain topic
         [HttpGet]
         public ActionResult Subtopics(int Id)
         {
-            IEnumerable<Subtopics> sub;          //subtopic list
+            IEnumerable<Subtopics> sub;                                             //subtopics list
             using (ForumDBEntities entities = new ForumDBEntities())
             {
                 sub = entities.Subtopics.Where(e => e.Topics.Id == Id).ToList();

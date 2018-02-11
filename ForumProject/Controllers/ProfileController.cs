@@ -72,6 +72,7 @@ namespace ForumProject.Controllers
             }
         }
 
+        //change user's image
         [HttpPost]
         public ActionResult UploadImage(HttpPostedFileBase image)
         {
@@ -191,7 +192,9 @@ namespace ForumProject.Controllers
             }
         }
 
-        /*id - comment id*/
+        /* Like comment
+         * id - comment id
+         */
         public ActionResult LikeComment(int id)
         {
             var userId = Session["UserId"];
