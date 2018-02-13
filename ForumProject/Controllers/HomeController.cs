@@ -6,18 +6,22 @@ using System.Web.Mvc;
 using ForumProject.Models;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using PagedList;
+using PagedList.Mvc;
 
 namespace ForumProject.Controllers
 {
     public class HomeController : Controller
     {
         //Index page with all records list
-        public async Task<ActionResult> Index()
+        public ActionResult Index(int? page)
         {
-            IEnumerable<Records> records;
+            int pageNum = page ?? 1;
+            ViewBag.PagedAction = PageInfo.PagedAction.Index;                   //choose action to call
+            IPagedList<Records> records;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                records = await entities.Records.Include(p => p.User).Include(p => p.UsersWhoLike).OrderByDescending(p => p.Date).ToListAsync();
+                records = entities.Records.Include(p => p.User).Include(p => p.UsersWhoLike).OrderByDescending(p => p.Date).ToPagedList(pageNum, PageInfo.pageSize);
 
                 if (Session["UserId"] != null)
                 {
@@ -44,19 +48,22 @@ namespace ForumProject.Controllers
         }
 
         //Search by keyword
-        public ActionResult Search(string searchLine)
+        public ActionResult Search(string searchLine, int? page)
         {
+            int pageNum = page ?? 1;
             IEnumerable<Records> records;
+            ViewBag.PagedAction = PageInfo.PagedAction.Search;             //choose action to call
+            ViewBag.SearchLine = searchLine;
             if (!searchLine.Equals(""))
             {
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {
-                    records = entities.Records.Include(r => r.User).Include(r => r.UsersWhoLike).Where(r => r.Text.Contains(searchLine)).OrderByDescending(r => r.Date).ToList();
+                    records = entities.Records.Include(r => r.User).Include(r => r.UsersWhoLike).Where(r => r.Text.Contains(searchLine)).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
                 }
             }
             else
             {
-                records = new List<Records>();
+                records = new List<Records>();          //??????????????
             }
 
             return View("~/Views/Home/Index.cshtml", records);

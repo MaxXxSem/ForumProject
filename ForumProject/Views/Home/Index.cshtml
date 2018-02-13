@@ -1,5 +1,6 @@
 ﻿@using ForumProject.Models
-@model IEnumerable<Records>
+@using PagedList.Mvc
+@model PagedList.IPagedList<Records>
 
 @section Scripts{
     @Scripts.Render("~/Scripts/all.js")
@@ -15,6 +16,7 @@
 @section Styles{
     <link href="@Url.Content("~/Content/IndexCssPage.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Sidebar.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/PagedList.css")" rel="stylesheet" type="text/css" />
 }
 
 <div id="header_bottom">
@@ -62,6 +64,18 @@
             </div>
         }
     }
+        @if (ViewBag.PagedAction == PageInfo.PagedAction.Index)
+        {
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        }
+        else if (ViewBag.PagedAction == PageInfo.PagedAction.Search)
+        {
+            @Html.PagedListPager(Model, page => Url.Action("Search", new { ViewBag.SearchLine, page }))
+        }
+        else if (ViewBag.PagedAction == PageInfo.PagedAction.SubtopicsRecords)
+        {
+            @Html.PagedListPager(Model, page => Url.Action("SubtopicsRecords", new { Model.First().SubtopicId, page }))
+        }
     </div>
 
     @{Html.RenderAction("Sidebar", "Home");}
