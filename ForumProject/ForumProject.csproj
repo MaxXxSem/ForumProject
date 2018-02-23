@@ -164,49 +164,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccessLevel.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BlockedUsers.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Comments.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ForumDbModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ForumDbModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ForumDbModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ForumDbModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ForumDbModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LevelInfo.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Data\AccessLevel.cs" />
+    <Compile Include="Models\Data\BlockedUsers.cs" />
+    <Compile Include="Models\Data\Comments.cs" />
+    <Compile Include="Models\Data\ForumDBEntities.cs" />
+    <Compile Include="Models\Data\LevelInfo.cs" />
+    <Compile Include="Models\Data\Records.cs" />
+    <Compile Include="Models\Data\Subtopics.cs" />
+    <Compile Include="Models\Data\Topics.cs" />
+    <Compile Include="Models\Data\Users.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\Popular.cs" />
     <Compile Include="Models\Profile.cs" />
-    <Compile Include="Models\Records.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SignInUp.cs" />
-    <Compile Include="Models\Subtopics.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Topics.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Users.cs">
-      <DependentUpon>ForumDbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -253,24 +223,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\ForumDbModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ForumDbModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ForumDbModel.edmx.diagram">
-      <DependentUpon>ForumDbModel.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Models\ForumDbModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ForumDbModel.edmx</DependentUpon>
-      <LastGenOutput>ForumDbModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ForumDbModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ForumDbModel.edmx</DependentUpon>
-      <LastGenOutput>ForumDbModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\all.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

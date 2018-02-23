@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
+using ForumProject.Models.Data;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using PagedList;

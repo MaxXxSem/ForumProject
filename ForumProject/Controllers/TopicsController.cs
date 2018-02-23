@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
+using ForumProject.Models.Data;
 using System.Data.Entity;
 using PagedList;
 using PagedList.Mvc;
@@ -19,7 +20,7 @@ namespace ForumProject.Controllers
             IEnumerable<Subtopics> sub;                                             //subtopics list
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                sub = entities.Subtopics.Where(e => e.Topics.Id == Id).ToList();
+                sub = entities.Subtopics.Where(e => e.Topic.Id == Id).ToList();
             }
 
             return View(sub);

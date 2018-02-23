@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ForumProject.Models.Data;
 
 namespace ForumProject.Models
 {
@@ -14,7 +15,7 @@ namespace ForumProject.Models
             bool result;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                if (entities.Users.Any(u => u.Login == login && u.Password == password) && !entities.Users.Where(u => u.Login == login).First().BlockedUsers.Any(u => u.Users.Login == login))
+                if (entities.Users.Any(u => u.Login == login && u.Password == password) && !entities.Users.Where(u => u.Login == login).First().BlockedUsers.Any(u => u.User.Login == login))
                 {
                     result = true;
                 }
