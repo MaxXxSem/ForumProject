@@ -194,3 +194,7 @@ footer {
 #email {
     float: right;
 }
+
+.validation-summary-errors{
+    color: red;
+}

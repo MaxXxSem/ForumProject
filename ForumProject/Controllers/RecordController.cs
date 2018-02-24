@@ -7,7 +7,6 @@ using ForumProject.Models.ViewModels;
 using ForumProject.Models.Data;
 using ForumProject.Models.DTO;
 using System.Data.Entity;
-using AutoMapper;
 
 namespace ForumProject.Controllers
 {
@@ -43,6 +42,11 @@ namespace ForumProject.Controllers
         [HttpPost]
         public ActionResult AddRecord(AddRecordViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return new HttpStatusCodeResult(400, "Wrong data");
+            }
+
             if (Session["UserId"] != null)
             {
                 Records record = new Records()
@@ -126,6 +130,11 @@ namespace ForumProject.Controllers
         [ActionName("RecordView")]
         public ActionResult AddComment(AddCommentViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return new HttpStatusCodeResult(400, "Wrong input");
+            }
+
             if (Session["UserId"] == null)
             {
                 return RedirectToAction("SignIn", "Auth");

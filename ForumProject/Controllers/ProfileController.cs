@@ -9,7 +9,6 @@ using ForumProject.Models.ViewModels;
 using ForumProject.Models.DTO;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace ForumProject.Controllers
 {

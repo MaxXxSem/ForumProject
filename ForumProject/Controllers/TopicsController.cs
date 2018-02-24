@@ -9,7 +9,6 @@ using ForumProject.Models.ViewModels;
 using System.Data.Entity;
 using PagedList;
 using PagedList.Mvc;
-using AutoMapper;
 
 namespace ForumProject.Controllers
 {

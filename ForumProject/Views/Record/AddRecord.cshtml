@@ -8,6 +8,7 @@
 @section Styles{
     <link href="@Url.Content("~/Content/AddRecord.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Sidebar.css")" rel="stylesheet" type="text/css" />
+
 }
 
 <main>
@@ -25,6 +26,7 @@
             </div>
             <div class="record_content">
                 <form id="new_record" method="post">
+                    @Html.ValidationSummary(true)
                     <input type="hidden" value="@ViewBag.SubtopicId" name="SubtopicId" />
                     <span>Record name</span>
                     <input class="add_record_input" id="record_name" type="text" name="Name" />
