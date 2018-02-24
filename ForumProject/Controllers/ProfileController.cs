@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
 using ForumProject.Models.Data;
+using ForumProject.Models.ViewModels;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace ForumProject.Controllers
 {
@@ -35,14 +37,17 @@ namespace ForumProject.Controllers
                 ViewBag.UserStatus = "guest";
             }
 
-            Users user;
+            ProfileViewModel profile;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                var usersList = await entities.Users.Where(u => u.Id == Id).Include(u => u.Records.Select(r => r.UsersWhoLike))
+                var user = await entities.Users.Where(u => u.Id == Id).Include(u => u.Records.Select(r => r.UsersWhoLike))
                     .Include(u => u.LikedRecords.Select(r => r.UsersWhoLike))
                     .Include(u => u.Subscriptions.Select(s => s.LevelInfo))
-                    .Include(u => u.Subscribers.Select(s => s.LevelInfo)).ToListAsync();
-                user = usersList.First();
+                    .Include(u => u.Subscribers.Select(s => s.LevelInfo)).FirstAsync();
+
+                Mapper.Initialize(cfg => cfg.CreateMap<Users, ProfileViewModel>());
+                profile = Mapper.Map<ProfileViewModel>(user);
+                Mapper.Reset();
 
                 //check user in subscriptions
                 if (ViewBag.UserStatus.Equals("user") && userId != null && entities.Users.Find(userId).Subscriptions.Any(u => u.Id == Id))
@@ -55,7 +60,7 @@ namespace ForumProject.Controllers
                 }
             }
 
-            return View(user);
+            return View(profile);
         }
 
         //delete profile

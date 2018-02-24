@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
 using ForumProject.Models.Data;
+using ForumProject.Models.ViewModels;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using PagedList;
@@ -19,10 +20,22 @@ namespace ForumProject.Controllers
         {
             int pageNum = page ?? 1;
             ViewBag.PagedAction = PageInfo.PagedAction.Index;                   //choose action to call
-            IPagedList<Records> records;
+
+            IPagedList<RecordsListViewModel> records;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                records = entities.Records.Include(p => p.User).Include(p => p.UsersWhoLike).OrderByDescending(p => p.Date).ToPagedList(pageNum, PageInfo.pageSize);
+                records = (from r in entities.Records
+                           select new RecordsListViewModel()
+                           {
+                               Id = r.Id,
+                               Name = r.Name,
+                               Text = r.Text,
+                               Date = r.Date,
+                               UserId = r.UserId,
+                               SubtopicId = r.SubtopicId,
+                               User = r.User,
+                               UsersWhoLike = r.UsersWhoLike
+                           }).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
 
                 if (Session["UserId"] != null)
                 {
@@ -52,19 +65,33 @@ namespace ForumProject.Controllers
         public ActionResult Search(string searchLine, int? page)
         {
             int pageNum = page ?? 1;
-            IEnumerable<Records> records;
-            ViewBag.PagedAction = PageInfo.PagedAction.Search;             //choose action to call
-            ViewBag.SearchLine = searchLine;
+            ViewBag.PagedAction = PageInfo.PagedAction.Search;              //choose action to call
+            ViewBag.SearchLine = searchLine;                                //for pagination
+
+            IEnumerable<RecordsListViewModel> records;
+
             if (!searchLine.Equals(""))
             {
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {
-                    records = entities.Records.Include(r => r.User).Include(r => r.UsersWhoLike).Where(r => r.Text.Contains(searchLine)).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
+                    records = (from r in entities.Records
+                               where r.Text.Contains(searchLine)
+                               select new RecordsListViewModel()
+                               {
+                                   Id = r.Id,
+                                   Name = r.Name,
+                                   Text = r.Text,
+                                   Date = r.Date,
+                                   UserId = r.UserId,
+                                   SubtopicId = r.SubtopicId,
+                                   User = r.User,
+                                   UsersWhoLike = r.UsersWhoLike
+                               }).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
                 }
             }
             else
             {
-                records = new List<Records>();          //??????????????
+                return RedirectToAction("Index");
             }
 
             return View("~/Views/Home/Index.cshtml", records);

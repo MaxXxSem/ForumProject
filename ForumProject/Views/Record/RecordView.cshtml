@@ -1,5 +1,6 @@
-﻿@using ForumProject.Models.Data
-@model Records
+﻿@using ForumProject.Models.ViewModels
+@using ForumProject.Models.Data
+@model RecordViewModel
 
 @section Scripts{
     @Scripts.Render("~/Scripts/all.js")
@@ -61,13 +62,14 @@
                 <div class="comments">
                     <h4>Comments</h4>
                     <form method="post">
+                        @Html.ValidationSummary(true)
                         <input type="hidden" name="RecordId" value="@Model.Id" />
                         <textarea placeholder="Your comment" name="Text"></textarea>
                         <input type="submit" value="Send" />
                     </form>
 
                     <!-- COMMENTS---------------------------------------------- -->
-                    @foreach (var comment in ViewBag.Comments)
+                    @foreach (var comment in Model.Comments)
                     {
                         <div class="record">
                             <div class="image_block">

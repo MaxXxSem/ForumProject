@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ForumProject.Models;
+using ForumProject.Models.ViewModels;
 using ForumProject.Models.Data;
 using System.Data.Entity;
+using AutoMapper;
 
 namespace ForumProject.Controllers
 {
@@ -18,8 +19,7 @@ namespace ForumProject.Controllers
         public ActionResult AddRecord(int Id)
         {
             ViewBag.SubtopicId = Id;
-
-            Users user = null;
+            UserAddsRecordViewModel user = new UserAddsRecordViewModel();
 
             //identify user
             if (Session["UserId"] == null)
@@ -31,7 +31,7 @@ namespace ForumProject.Controllers
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {
                     var userId = int.Parse(Session["UserId"].ToString());
-                    user = entities.Users.Where(u => u.Id == userId).ToList().First();
+                    user.MainPhoto = entities.Users.Where(u => u.Id == userId).Select(u => u.MainPhoto).First();
                 }
             }
 
@@ -40,12 +40,18 @@ namespace ForumProject.Controllers
 
         /*Add record to database*/
         [HttpPost]
-        public ActionResult AddRecord(Records record)
+        public ActionResult AddRecord(AddRecordViewModel model)
         {
             if (Session["UserId"] != null)
             {
-                record.Date = DateTime.Now;
-                record.UserId = int.Parse(Session["UserId"].ToString());
+                Records record = new Records()
+                {
+                    Name = model.Name,
+                    Text = model.Text,
+                    SubtopicId = model.SubtopicId,
+                    Date = DateTime.Now,
+                    UserId = int.Parse(Session["UserId"].ToString())
+                };
 
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {
@@ -67,14 +73,22 @@ namespace ForumProject.Controllers
         [HttpGet]
         public ActionResult RecordView(int Id)
         {
-            Records record;
+            RecordViewModel viewRecord;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                record = entities.Records.Include(r => r.User).Where(r => r.Id == Id).ToList().First();     //ToList??
-                ViewBag.Comments = entities.Comments.Include(c => c.User).Include(c => c.UsersWhoLike).Where(c => c.Record.Id == Id).OrderByDescending(c => c.Date).ToList();   //send comments to View
+                var record = entities.Records.Include(r => r.User).Where(r => r.Id == Id).First();
+                var comments = entities.Comments.Include(c => c.User).Include(c => c.UsersWhoLike).Where(c => c.Record.Id == Id).OrderByDescending(c => c.Date).ToList();   //send comments to View
+
+
+
+                record.Comments = comments ?? null;
+
+                Mapper.Initialize(cfg => cfg.CreateMap<Records, RecordViewModel>());
+                viewRecord = Mapper.Map<RecordViewModel>(record);
+                Mapper.Reset();
 
                 if (Session["UserId"] != null)
-                {
+                { 
                     var userId = int.Parse(Session["UserId"].ToString());
                     var user = entities.Users.Find(userId);
                     ViewBag.LikedComments = user.LikedComments.ToList();
@@ -90,12 +104,13 @@ namespace ForumProject.Controllers
                 }
             }
 
-            return View(record);
+            return View(viewRecord);
         }
 
         //Add comment
         [HttpPost]
-        public ActionResult RecordView(Comments comment)
+        [ActionName("RecordView")]
+        public ActionResult AddComment(AddCommentViewModel model)
         {
             if (Session["UserId"] == null)
             {
@@ -103,8 +118,13 @@ namespace ForumProject.Controllers
             }
             else
             {
-                comment.Date = DateTime.Now;
-                comment.UserId = int.Parse(Session["UserId"].ToString());
+                Comments comment = new Comments()
+                {
+                    Text = model.Text,
+                    RecordId = model.RecordId,
+                    Date = DateTime.Now,
+                    UserId = int.Parse(Session["UserId"].ToString())
+                };
 
                 using (ForumDBEntities entities = new ForumDBEntities())
                 {

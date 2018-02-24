@@ -1,7 +1,7 @@
 ﻿@using ForumProject.Models
-@using ForumProject.Models.Data;
+@using ForumProject.Models.ViewModels;
 @using PagedList.Mvc
-@model PagedList.IPagedList<Records>
+@model PagedList.IPagedList<RecordsListViewModel>
 
 @section Scripts{
     @Scripts.Render("~/Scripts/all.js")
@@ -28,7 +28,7 @@
 
 <main>
     <div id="records">
-    @if ((Model as IEnumerable<Records>).Count() == 0)
+    @if ((Model as IEnumerable<RecordsListViewModel>).Count() == 0)
     {
         <div><span>Empty...</span></div>
     }
@@ -51,7 +51,7 @@
                     </div>
                     <div class="record_bottom">
                         <span id="likes_count">@record.UsersWhoLike.Count</span>
-                        @if (ViewBag.LikedRecords != null && (ViewBag.LikedRecords as List<Records>).Any(r => r.Id == record.Id))
+                        @if (ViewBag.LikedRecords != null && (ViewBag.LikedRecords as List<RecordsListViewModel>).Any(r => r.Id == record.Id))
                         {
                             <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@record.Id"></button>
                         }
@@ -65,6 +65,7 @@
             </div>
         }
     }
+
         @if (ViewBag.PagedAction == PageInfo.PagedAction.Index)
         {
             @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

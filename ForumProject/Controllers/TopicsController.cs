@@ -5,9 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models;
 using ForumProject.Models.Data;
+using ForumProject.Models.ViewModels;
 using System.Data.Entity;
 using PagedList;
 using PagedList.Mvc;
+using AutoMapper;
 
 namespace ForumProject.Controllers
 {
@@ -17,13 +19,15 @@ namespace ForumProject.Controllers
         [HttpGet]
         public ActionResult Subtopics(int Id)
         {
-            IEnumerable<Subtopics> sub;                                             //subtopics list
+            IEnumerable<SubtopicViewModel> subtopics;                                             //subtopics list
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                sub = entities.Subtopics.Where(e => e.Topic.Id == Id).ToList();
+                subtopics = (from s in entities.Subtopics
+                      where s.Topic.Id == Id
+                      select new SubtopicViewModel { Id = s.Id, Name = s.Name }).ToList();
             }
 
-            return View(sub);
+            return View(subtopics);
         }
 
         //Show records in certain subtopic
