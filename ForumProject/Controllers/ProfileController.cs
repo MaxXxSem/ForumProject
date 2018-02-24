@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ForumProject.Models;
 using ForumProject.Models.Data;
 using ForumProject.Models.ViewModels;
+using ForumProject.Models.DTO;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -40,14 +41,34 @@ namespace ForumProject.Controllers
             ProfileViewModel profile;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                var user = await entities.Users.Where(u => u.Id == Id).Include(u => u.Records.Select(r => r.UsersWhoLike))
-                    .Include(u => u.LikedRecords.Select(r => r.UsersWhoLike))
-                    .Include(u => u.Subscriptions.Select(s => s.LevelInfo))
-                    .Include(u => u.Subscribers.Select(s => s.LevelInfo)).FirstAsync();
-
-                Mapper.Initialize(cfg => cfg.CreateMap<Users, ProfileViewModel>());
-                profile = Mapper.Map<ProfileViewModel>(user);
-                Mapper.Reset();
+                profile = await (from u in entities.Users
+                           where u.Id == Id
+                           select new ProfileViewModel()
+                           {
+                               Id = u.Id,
+                               Name = u.Name,
+                               MainPhoto = u.MainPhoto,
+                               Records = (from r in u.Records
+                                          select new ProfileRecordDTO()
+                                          {
+                                              Id = r.Id, Name = r.Name, Text = r.Text, Date = r.Date, UsersWhoLikeCount = r.UsersWhoLike.Count
+                                          }).ToList(),
+                               LikedRecords = (from r in u.LikedRecords
+                                               select new ProfileRecordDTO()
+                                               {
+                                                   Id = r.Id, Name = r.Name, Text = r.Text, Date = r.Date, UsersWhoLikeCount = r.UsersWhoLike.Count
+                                               }).ToList(),
+                               Subscriptions = (from s in u.Subscriptions
+                                                select new SubscribtionsDTO()
+                                                {
+                                                    Id = s.Id, Name = s.Name, MainPhoto = s.MainPhoto, LevelInfoName = s.LevelInfo.Name
+                                                }).ToList(),
+                               Subscribers = (from s in u.Subscribers
+                                              select new SubscribtionsDTO()
+                                              {
+                                                  Id = s.Id, Name = s.Name, MainPhoto = s.MainPhoto, LevelInfoName = s.LevelInfo.Name
+                                              }).ToList()
+                           }).FirstAsync();
 
                 //check user in subscriptions
                 if (ViewBag.UserStatus.Equals("user") && userId != null && entities.Users.Find(userId).Subscriptions.Any(u => u.Id == Id))

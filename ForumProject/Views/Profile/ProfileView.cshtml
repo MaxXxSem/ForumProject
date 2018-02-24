@@ -192,7 +192,7 @@
                         @record.Text
                     </div>
                     <div class="record_bottom">
-                        <span id="likes_count">@record.UsersWhoLike.Count</span>
+                        <span id="likes_count">@record.UsersWhoLikeCount</span>
                         @if (Model.LikedRecords.Any(r => r.Id == record.Id))
                         { 
                             <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@record.Id"></button>
@@ -217,7 +217,7 @@
                         </a>
                     </div>
 	                <a href="/Profile/ProfileView/@subscription.Id"><span class="publisher_name">@subscription.Name</span></a>
-	                <span class="publisher_level">Level: @subscription.LevelInfo.Name</span>
+	                <span class="publisher_level">Level: @subscription.LevelInfoName</span>
 	            </div>
             }
         </div>
@@ -232,7 +232,7 @@
                         </a>
                     </div>
                     <a href="/Profile/ProfileView/@subscriber.Id"><span class="publisher_name">@subscriber.Name</span></a>
-                    <span class="publisher_level">Level: @subscriber.LevelInfo.Name</span>
+                    <span class="publisher_level">Level: @subscriber.LevelInfoName</span>
                 </div>
             }
         </div>
@@ -251,7 +251,7 @@
                             @record.Text
                         </div>
                         <div class="record_bottom">
-                            <span id="likes_count">@record.UsersWhoLike.Count</span>
+                            <span id="likes_count">@record.UsersWhoLikeCount</span>
                             <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@record.Id"></button>
                             <a href="/Record/RecordView/@record.Id" class="comments">Comments</a>
                         </div>

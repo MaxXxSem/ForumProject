@@ -176,6 +176,9 @@
     <Compile Include="Models\Data\Subtopics.cs" />
     <Compile Include="Models\Data\Topics.cs" />
     <Compile Include="Models\Data\Users.cs" />
+    <Compile Include="Models\DTO\CommentDTO.cs" />
+    <Compile Include="Models\DTO\ProfileRecordDTO.cs" />
+    <Compile Include="Models\DTO\SubscribtionsDTO.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\Popular.cs" />
     <Compile Include="Models\Profile.cs" />

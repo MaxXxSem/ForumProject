@@ -73,7 +73,7 @@
                     {
                         <div class="record">
                             <div class="image_block">
-                                <a href="/Profile/ProfileView/@comment.UserId"><div class="image"><img src="~/Content/images/@comment.User.MainPhoto" /></div></a>
+                                <a href="/Profile/ProfileView/@comment.UserId"><div class="image"><img src="~/Content/images/@comment.UserMainPhoto" /></div></a>
                             </div>
                             <div class="record_content">
                                 <div class="name_date">
@@ -82,13 +82,13 @@
                                         <button class="delete_comments" id="delete_comment" value="@comment.Id"></button>
                                     }
                                     <span>@comment.Date.ToShortDateString()</span>
-                                    <a href="/Profile/ProfileView/@comment.UserId"><div class="user_name">@comment.User.Name</div></a>
+                                    <a href="/Profile/ProfileView/@comment.UserId"><div class="user_name">@comment.UserName</div></a>
                                 </div>
                                 <div class="record_text">
                                     @comment.Text
                                 </div>
                                 <div class="record_bottom">
-                                    <span id="likes_count">@comment.UsersWhoLike.Count</span>
+                                    <span id="likes_count">@comment.UsersWhoLikeCount</span>
                                     @if (ViewBag.LikedComments != null && (ViewBag.LikedComments as List<Comments>).Any(r => r.Id == comment.Id))
                                     {
                                         <button class="like" style="background-image: url(/Content/icons/star_blue24.png)" value="true" name="@comment.Id"></button>

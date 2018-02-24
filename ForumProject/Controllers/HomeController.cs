@@ -40,7 +40,11 @@ namespace ForumProject.Controllers
                 if (Session["UserId"] != null)
                 {
                     int userId = int.Parse(Session["UserId"].ToString());
-                    ViewBag.LikedRecords = entities.Users.Find(userId).LikedRecords.ToList();       //mark like button by certain image
+                    ViewBag.LikedRecords = (from r in entities.Users.Find(userId).LikedRecords                  //get liked by user records list
+                                            select new RecordsListViewModel()
+                                            {
+                                                Id = r.Id
+                                            }).ToList();       //mark like button by certain image
                 }
             }
 

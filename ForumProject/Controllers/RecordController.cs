@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ForumProject.Models.ViewModels;
 using ForumProject.Models.Data;
+using ForumProject.Models.DTO;
 using System.Data.Entity;
 using AutoMapper;
 
@@ -76,16 +77,29 @@ namespace ForumProject.Controllers
             RecordViewModel viewRecord;
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                var record = entities.Records.Include(r => r.User).Where(r => r.Id == Id).First();
-                var comments = entities.Comments.Include(c => c.User).Include(c => c.UsersWhoLike).Where(c => c.Record.Id == Id).OrderByDescending(c => c.Date).ToList();   //send comments to View
-
-
-
-                record.Comments = comments ?? null;
-
-                Mapper.Initialize(cfg => cfg.CreateMap<Records, RecordViewModel>());
-                viewRecord = Mapper.Map<RecordViewModel>(record);
-                Mapper.Reset();
+                viewRecord = (from r in entities.Records
+                              where r.Id == Id
+                              select new RecordViewModel()
+                              {
+                                  Id = r.Id,
+                                  UserId = r.UserId,
+                                  Name = r.Name,
+                                  Text = r.Text,
+                                  Date = r.Date,
+                                  User = r.User,
+                                  Comments = (from c in r.Comments
+                                              where c.Record.Id == Id
+                                              select new CommentDTO()                                   //use DTO to convey to controller
+                                              {
+                                                  Id = c.Id,
+                                                  Date = c.Date,
+                                                  Text = c.Text,
+                                                  UserId = c.UserId,
+                                                  UserName = c.User.Name,
+                                                  UserMainPhoto = c.User.MainPhoto,
+                                                  UsersWhoLikeCount = c.UsersWhoLike.Count
+                                              }).ToList()
+                              }).First();
 
                 if (Session["UserId"] != null)
                 { 
