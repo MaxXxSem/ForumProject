@@ -5,6 +5,7 @@ namespace ForumProject.Models.Data
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using ForumProject.Models.Identity;
 
     [Table("Users")]
     public partial class Users
@@ -12,6 +13,10 @@ namespace ForumProject.Models.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
+            LevelId = 1;
+            AccessLevelId = 1;
+            MainPhoto = "anonim.png";
+
             BlockedUsers = new HashSet<BlockedUsers>();
             Comments = new HashSet<Comments>();
             Records = new HashSet<Records>();
@@ -67,5 +72,7 @@ namespace ForumProject.Models.Data
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Users> Subscribers { get; set; }
+        
+        //public virtual ApplicationUser UserData { get; set; }
     }
 }

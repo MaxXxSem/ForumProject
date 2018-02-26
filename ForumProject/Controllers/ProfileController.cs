@@ -9,6 +9,10 @@ using ForumProject.Models.ViewModels;
 using ForumProject.Models.DTO;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.Owin;
+using ForumProject.Models.Identity;
+using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace ForumProject.Controllers
 {

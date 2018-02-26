@@ -1,8 +1,13 @@
-﻿@section Scripts{
+﻿@using ForumProject.Models.Identity;
+@model  RegistrationModel
+
+@section Scripts{
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     @Scripts.Render("~/Scripts/signInUp.js")
-    <script>
+    @Scripts.Render("~/Scripts/jquery.validate.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.js")
+    @*<script>
         function OnComplete(res, status) {
             if (res.responseText == "true") {
                 document.location.href = "/Auth/SignIn";
@@ -11,7 +16,7 @@
                 document.getElementById('message_wrong').innerHTML = "Such login already exists <br/>";
             }
         }
-    </script>
+    </script>*@
 }
 
 @section Styles{
@@ -21,17 +26,23 @@
 <main>
     <div id="form_content">
         <h3>Sign up</h3>
-        <div id="message_wrong" style="color: red"></div>            <!-- Wrong login or password message -->
-        @using (Ajax.BeginForm("SignUp", null, new AjaxOptions { HttpMethod = "Post", OnComplete = "OnComplete" }, new { @name="_form"}))
+        @*<div id="message_wrong" style="color: red"></div>*@            <!-- Wrong login or password message -->
+        @using (Html.BeginForm("SignUp", "Auth", FormMethod.Post, new { @name="_form"}))
         {
-            <span>Enter your name</span> <br />
-            <input type="text" class="input_text" name="Name" /> <br />
-            <span>Enter your login</span> <br />
-            <input type="text" class="input_text" name="Login" /> <br />
-            <span>Enter your password</span> <br />
-            <input type="password" class="input_text" name="Password" /> <br />
-            <span>Confirm your password</span> <br />
-            <input type="password" class="input_text" /> <br />
+            @Html.ValidationSummary(true)
+            
+            <span>Enter your name</span>
+            @Html.ValidationMessageFor(m => m.Name)
+            @Html.EditorFor(m => m.Name)
+            <span>Enter your login</span>
+            @Html.ValidationMessageFor(m => m.Login)
+            @Html.EditorFor(m => m.Login)
+            <span>Enter your password</span>
+            @Html.ValidationMessageFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password)
+            <span>Confirm your password</span>
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            @Html.PasswordFor(m => m.ConfirmPassword)
             <input type="submit" value="Create account "/>
         }
     </div>

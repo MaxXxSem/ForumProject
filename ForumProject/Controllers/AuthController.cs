@@ -6,6 +6,11 @@ using System.Web.Mvc;
 using ForumProject.Models;
 using ForumProject.Models.Data;
 using System.Data.Entity;
+using ForumProject.Models.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
+using System.Data.Entity.Infrastructure;
+using Microsoft.AspNet.Identity;
 
 namespace ForumProject.Controllers
 {
@@ -60,34 +65,50 @@ namespace ForumProject.Controllers
 
         //Add new user to DB
         [HttpPost]
-        public ActionResult SignUp(Users user)
+        public async Task<ActionResult> SignUp(RegistrationModel model/*user*/)
         {
-            user.LevelId = 1;
-            user.AccessLevelId = 1;
-            user.MainPhoto = "anonim.png";
-            bool exists = false;
-
-            using (ForumDBEntities entities = new ForumDBEntities())
+            if (!ModelState.IsValid)
             {
-                if (new SignInUp().TrySignUp(user.Login))
-                {
-                    entities.Users.Add(user);
-                    entities.SaveChanges();
-                }
-                else
-                {
-                    exists = true;
-                }
+                return View(model);
             }
 
-            if (exists == false)
+            var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            ApplicationUser us = new ApplicationUser() {UserName = model.Login, PasswordHash = model.Password };
+
+            var result = await manager.CreateAsync(us, model.Password);
+            if (result.Succeeded)
             {
-                return Json(true);
+                return RedirectToAction("Index", "Home");
             }
             else
             {
-                return Json(false);
+                ModelState.AddModelError("", "Such user already exists");
             }
+
+            return View(model);
+            //bool exists = false;
+
+            //using (ForumDBEntities entities = new ForumDBEntities())
+            //{
+            //    if (new SignInUp().TrySignUp(user.Login))
+            //    {
+            //        entities.Users.Add(user);
+            //        entities.SaveChanges();
+            //    }
+            //    else
+            //    {
+            //        exists = true;
+            //    }
+            //}
+
+            //if (exists == false)
+            //{
+            //    return Json(true);
+            //}
+            //else
+            //{
+            //    return Json(false);
+            //}
         }
 
         //delete profile

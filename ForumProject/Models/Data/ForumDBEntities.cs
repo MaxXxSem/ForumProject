@@ -4,6 +4,7 @@ namespace ForumProject.Models.Data
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using ForumProject.Models.Identity;
 
     public partial class ForumDBEntities : DbContext
     {
@@ -20,6 +21,7 @@ namespace ForumProject.Models.Data
         public virtual DbSet<Subtopics> Subtopics { get; set; }
         public virtual DbSet<Topics> Topics { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<ApplicationUser> UserData { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -73,6 +75,16 @@ namespace ForumProject.Models.Data
                 .HasMany(e => e.Subscriptions)
                 .WithMany(e => e.Subscribers)
                 .Map(m => m.ToTable("Subscribes").MapLeftKey("SubscriberId").MapRightKey("PublisherId"));
+
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasRequired(u => u.User)
+            //    .WithOptional()
+            //    .Map(u => u.MapKey("UserId"));
+        }
+
+        public static ForumDBEntities Create()
+        {
+            return new ForumDBEntities();
         }
     }
 }
