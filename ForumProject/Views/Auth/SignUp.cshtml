@@ -7,16 +7,6 @@
     @Scripts.Render("~/Scripts/signInUp.js")
     @Scripts.Render("~/Scripts/jquery.validate.js")
     @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.js")
-    @*<script>
-        function OnComplete(res, status) {
-            if (res.responseText == "true") {
-                document.location.href = "/Auth/SignIn";
-            } else {
-                document.getElementById('message_wrong').innerHTML = "";
-                document.getElementById('message_wrong').innerHTML = "Such login already exists <br/>";
-            }
-        }
-    </script>*@
 }
 
 @section Styles{
@@ -26,9 +16,9 @@
 <main>
     <div id="form_content">
         <h3>Sign up</h3>
-        @*<div id="message_wrong" style="color: red"></div>*@            <!-- Wrong login or password message -->
         @using (Html.BeginForm("SignUp", "Auth", FormMethod.Post, new { @name="_form"}))
         {
+            @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
             
             <span>Enter your name</span>

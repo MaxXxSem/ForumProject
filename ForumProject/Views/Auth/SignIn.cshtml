@@ -1,18 +1,12 @@
-﻿@section Scripts{
+﻿@using ForumProject.Models.Identity;
+@model Login
+
+@section Scripts{
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     @Scripts.Render("~/Scripts/signInUp.js")
-    
-    <script>
-        function OnComplete(res, status) {
-            if (res.responseText == "true") {
-                document.location.href = "/Home/Index";
-            } else {
-                document.getElementById('message_wrong').innerHTML = "";
-                document.getElementById('message_wrong').innerHTML = "Wrong login or password <br/>";
-            }
-        }
-    </script>
+    @Scripts.Render("~/Scripts/jquery.validate.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.js")
 }
 
 @section Styles{
@@ -22,13 +16,18 @@
 <main>
     <div id="form_content">
         <h3>Sign in</h3>
-        <div id="message_wrong" style="color: red"></div>            <!-- Wrong login or password message -->
-        @using (Ajax.BeginForm("SignIn", null, new AjaxOptions { HttpMethod = "Post", OnComplete = "OnComplete" }, new { @name="_form"}))
+        @using (Html.BeginForm("SignIn", "Auth", FormMethod.Post, new { @name="_form"}))
         {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
             <span>Login</span>
-            <input type="text" class="input_text" name="login" />
+            @Html.ValidationMessageFor(m => m.UserName)
+            @Html.EditorFor(m => m.UserName)
             <span>Password</span>
-            <input type="password" class="input_text" name="password" />
+            @Html.ValidationMessageFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password)
             <input type="submit" value="Log in" />
         }
 

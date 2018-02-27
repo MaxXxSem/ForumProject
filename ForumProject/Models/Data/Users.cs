@@ -72,7 +72,7 @@ namespace ForumProject.Models.Data
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Users> Subscribers { get; set; }
-        
-        //public virtual ApplicationUser UserData { get; set; }
+
+        public virtual ApplicationUser UserData { get; set; }
     }
 }

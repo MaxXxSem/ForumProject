@@ -217,6 +217,10 @@
     <Compile Include="Migrations\201802262115540_TimeStamp.Designer.cs">
       <DependentUpon>201802262115540_TimeStamp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802262307578_UserDataUsersRelation.cs" />
+    <Compile Include="Migrations\201802262307578_UserDataUsersRelation.Designer.cs">
+      <DependentUpon>201802262307578_UserDataUsersRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Data\AccessLevel.cs" />
     <Compile Include="Models\Data\BlockedUsers.cs" />
@@ -362,6 +366,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802262115540_TimeStamp.resx">
       <DependentUpon>201802262115540_TimeStamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802262307578_UserDataUsersRelation.resx">
+      <DependentUpon>201802262307578_UserDataUsersRelation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

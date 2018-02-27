@@ -21,7 +21,8 @@ namespace ForumProject
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Auth/SignIn")
+                LoginPath = new PathString("/Auth/SignIn"),
+                ReturnUrlParameter = "returnUrl"
             });
         }
     }

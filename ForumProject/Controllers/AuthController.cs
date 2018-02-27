@@ -11,49 +11,71 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using System.Security.Claims;
 
 namespace ForumProject.Controllers
 {
     public class AuthController : Controller
     {
+        //object for interacting with users
+        private ApplicationUserManager UserManager
+        {
+            get { return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+        }
+
+        //for SignIn / SignOut management
+        private IAuthenticationManager AuthenticationManager
+        {
+            get { return HttpContext.GetOwinContext().Authentication; } 
+        }
+
         //return authorization page
         [HttpGet]
-        public ActionResult SignIn()
+        public ActionResult SignIn(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         //check user login and pass
         [HttpPost]
-        public ActionResult SignIn(string login, string password)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SignIn(Login model, string returnUrl)
         {
-            if (new SignInUp().TrySignIn(login, password))
+            if (ModelState.IsValid)
             {
-                using (ForumDBEntities entities = new ForumDBEntities())
+                ApplicationUser user = await UserManager.FindAsync(model.UserName, model.Password);
+
+                if (user == null)
                 {
-                    var user = entities.Users.Where(u => u.Login == login).First();
-                    Session["UserId"] = user.Id;                                            //write Id into Session
-                    Session["UserName"] = user.Name;
-
-                    new Profile().CheckLevelInfo(entities, user.Id);
+                    ModelState.AddModelError("", "Wrong username or password");
                 }
+                else
+                {
+                    ClaimsIdentity claim = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    AuthenticationManager.SignOut();
+                    //IsPersistent - to save authentication after browser closing
+                    AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = true }, claim);
 
-                return Json(true);
+                    if (!String.IsNullOrEmpty(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
-            return Json(false);
+            ViewBag.ReturnUrl = returnUrl;
+            return View(model);
         }
 
         //sign out
         public ActionResult SignOut()
         {
-            if (Session["UserId"] != null)
-            {
-                Session["UserId"] = null;
-                Session["UserName"] = null;
-            }
-
-            return RedirectToAction("Index", "Home");
+            AuthenticationManager.SignOut();
+            return RedirectToAction("SignIn");
         }
 
         //returns SignUp page
@@ -65,20 +87,26 @@ namespace ForumProject.Controllers
 
         //Add new user to DB
         [HttpPost]
-        public async Task<ActionResult> SignUp(RegistrationModel model/*user*/)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SignUp(RegistrationModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            
+            Users userData = new Users()
+            {
+                Name = model.Name,
+                Login = model.Name,
+                Password = model.Password
+            };
+            ApplicationUser user = new ApplicationUser() {UserName = model.Login, PasswordHash = model.Password, User = userData };
+            var result = await UserManager.CreateAsync(user, model.Password);
 
-            var manager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            ApplicationUser us = new ApplicationUser() {UserName = model.Login, PasswordHash = model.Password };
-
-            var result = await manager.CreateAsync(us, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("SignIn");
             }
             else
             {
@@ -86,29 +114,6 @@ namespace ForumProject.Controllers
             }
 
             return View(model);
-            //bool exists = false;
-
-            //using (ForumDBEntities entities = new ForumDBEntities())
-            //{
-            //    if (new SignInUp().TrySignUp(user.Login))
-            //    {
-            //        entities.Users.Add(user);
-            //        entities.SaveChanges();
-            //    }
-            //    else
-            //    {
-            //        exists = true;
-            //    }
-            //}
-
-            //if (exists == false)
-            //{
-            //    return Json(true);
-            //}
-            //else
-            //{
-            //    return Json(false);
-            //}
         }
 
         //delete profile

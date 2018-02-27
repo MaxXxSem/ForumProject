@@ -23,4 +23,13 @@ namespace ForumProject.Models.Identity
         [Compare("Password", ErrorMessage = "Must be the same with password field")]
         public string ConfirmPassword { get; set; }
     }
+
+    public class Login
+    {
+        [Required(ErrorMessage = "Fill the field")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Fill the field")]
+        public string Password { get; set; }
+    }
 }

@@ -76,10 +76,10 @@ namespace ForumProject.Models.Data
                 .WithMany(e => e.Subscribers)
                 .Map(m => m.ToTable("Subscribes").MapLeftKey("SubscriberId").MapRightKey("PublisherId"));
 
-            //modelBuilder.Entity<ApplicationUser>()
-            //    .HasRequired(u => u.User)
-            //    .WithOptional()
-            //    .Map(u => u.MapKey("UserId"));
+            modelBuilder.Entity<ApplicationUser>()
+                .HasRequired(u => u.User)
+                .WithOptional()
+                .Map(u => u.MapKey("UserId"));
         }
 
         public static ForumDBEntities Create()

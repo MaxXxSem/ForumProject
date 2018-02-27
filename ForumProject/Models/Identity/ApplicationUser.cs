@@ -35,6 +35,6 @@ namespace ForumProject.Models.Identity
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
-        //public virtual Users User { get; set; }
+        public virtual Users User { get; set; }
     }
 }
