@@ -10,7 +10,7 @@ namespace ForumProject.Models
     public class Popular
     {
         //get 4 most popular records
-        public IEnumerable<Records> MostPopularRecords()
+        public static IEnumerable<Records> MostPopularRecords()
         {
             List<Records> records;
             using (ForumDBEntities entities = new ForumDBEntities())

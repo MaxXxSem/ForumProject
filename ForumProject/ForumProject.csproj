@@ -240,8 +240,7 @@
     <Compile Include="Models\Identity\AuthModels.cs" />
     <Compile Include="Models\PageInfo.cs" />
     <Compile Include="Models\Popular.cs" />
-    <Compile Include="Models\Profile.cs" />
-    <Compile Include="Models\SignInUp.cs" />
+    <Compile Include="Models\ProfileInfo.cs" />
     <Compile Include="Models\ViewModels\AddCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\AddRecordViewModel.cs" />
     <Compile Include="Models\ViewModels\ProfileViewModel.cs" />

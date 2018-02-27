@@ -17,7 +17,7 @@
             <div class="image_block">
                 @if (Model != null)
                 {
-                    <a href="/Profile/ProfileView/@Session["UserId"]">
+                    <a href="/Profile/ProfileView/@Model.Id">
                         <div class="image">
                             <img src="~/Content/images/@Model.MainPhoto" />
                         </div>

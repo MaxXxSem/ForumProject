@@ -118,7 +118,7 @@
         <img src="~/Content/images/@Model.MainPhoto" />
         <!-- CHANGE IMAGE -->
         <!-- DELETE PROFILE/SUBSCRIBE BUTTON -->
-        @if (ViewBag.UserStatus.Equals("owner"))
+        @if (ViewBag.IsOwner)
         {
             using (Html.BeginForm("UploadImage", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", id = "change_image_form" }))
             {
@@ -130,7 +130,7 @@
                 <input type="submit" class="delete_profile_btn" value="Delete profile" />
             </form>
         }
-        else if (ViewBag.UserStatus.Equals("user"))
+        else if (User.Identity.IsAuthenticated)
         {
             <div id="subscribe_unsubscribe_block">
                 @if (ViewBag.IsSubscription == true)
@@ -155,7 +155,7 @@
         <div id="profile_info">
             <div id="username">
                 <span id="username_text">@Model.Name</span>
-                @if (ViewBag.UserStatus.Equals("owner"))                        //make AJAX----------------------------------------
+                @if (ViewBag.IsOwner)                        //make AJAX----------------------------------------
                 {
                     <button id="change_name"></button>                          <!-- CHANGE NAME -->
                     using (Ajax.BeginForm("ChangeName", new AjaxOptions { UpdateTargetId = "username_text", HttpMethod = "Post" }))
@@ -175,7 +175,7 @@
 		    <div><button id="records_button">Records</button></div>
 		    <div><button id="subscriptions_button">Subscriptions</button></div>
             <div><button id="subscribers_button">Subscribers</button></div>
-            @if (ViewBag.UserStatus.Equals("owner"))
+            @if (ViewBag.IsOwner)
             {
 		        <div><button id="bookmarks_button">Bookmarks</button></div>
             }
@@ -237,7 +237,7 @@
             }
         </div>
 
-        @if (ViewBag.UserStatus.Equals("owner"))                                            //make AJAX----------------------------
+        @if (ViewBag.IsOwner)                                            //make AJAX----------------------------
         {
             <div class="all_records" id="bookmarks">
                 @foreach (var record in Model.LikedRecords)

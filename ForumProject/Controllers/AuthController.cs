@@ -32,7 +32,7 @@ namespace ForumProject.Controllers
 
         //return authorization page
         [HttpGet]
-        public ActionResult SignIn(string returnUrl)
+        public ActionResult SignIn(string returnUrl)                                //-----------------------------------------
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
@@ -51,12 +51,19 @@ namespace ForumProject.Controllers
                 {
                     ModelState.AddModelError("", "Wrong username or password");
                 }
+                //else if(ProfileInfo.IsBlocked(model.UserName))                  //check if user is blocked
+                //{
+                //    ModelState.AddModelError("", "Your account is blocked");
+                //}
                 else
                 {
                     ClaimsIdentity claim = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationManager.SignOut();
                     //IsPersistent - to save authentication after browser closing
                     AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = true }, claim);
+                    
+                    int id = UserManager.FindByName(model.UserName).User.Id;        //get current user's id
+                    ProfileInfo.CheckLevelInfo(id);                                     //try to change forum level
 
                     if (!String.IsNullOrEmpty(returnUrl))
                     {
@@ -72,9 +79,11 @@ namespace ForumProject.Controllers
         }
 
         //sign out
+        [Authorize]
         public ActionResult SignOut()
         {
             AuthenticationManager.SignOut();
+            Session.Abandon();
             return RedirectToAction("SignIn");
         }
 
@@ -118,29 +127,21 @@ namespace ForumProject.Controllers
 
         //delete profile
         [HttpPost]
-        public ActionResult Delete()
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<ActionResult> Delete()
         {
-            if (Session["UserId"] != null)                                              //if user is autorized
+            ApplicationUser user = await UserManager.FindByNameAsync(User.Identity.Name);
+            if (user != null)
             {
-                var userId = int.Parse(Session["UserId"].ToString());
-                using (ForumDBEntities entities = new ForumDBEntities())
+                var result = await UserManager.DeleteAsync(user);
+                if (result.Succeeded)
                 {
-                    var user = entities.Users.Where(u => u.Id == userId).First();       //check user in database
-                    if (user != null)
-                    {
-                        entities.Users.Remove(user);                                    //remove user from db
-                        entities.SaveChanges();
-                        Session["UserId"] = null;
-                        Session["UserName"] = null;
-                    }
+                    return RedirectToAction("SignOut");
                 }
+            }
 
-                return RedirectToAction("Index", "Home");                               //move to index page
-            }
-            else
-            {
-                return new HttpUnauthorizedResult("Unavailable operation");
-            }
+            return RedirectToAction("Index", "Home");                   //------------------------------------------
         }
     }
 }

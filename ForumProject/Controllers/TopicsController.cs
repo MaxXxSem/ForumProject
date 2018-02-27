@@ -33,11 +33,23 @@ namespace ForumProject.Controllers
         public ActionResult SubtopicsRecords(int Id, int? page)
         {
             int pageNum = page ?? 1;
-            IEnumerable<Records> records;
+            IEnumerable<RecordsListViewModel> records;
             ViewBag.PagedAction = PageInfo.PagedAction.SubtopicsRecords;            //choose action to call
             using (ForumDBEntities entities = new ForumDBEntities())
             {
-                records = entities.Records.Include(r => r.Subtopic).Where(r => r.Subtopic.Id == Id).Include(r => r.User).Include(r => r.UsersWhoLike).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
+                records = (from r in entities.Records
+                           where r.Subtopic.Id == Id
+                           select new RecordsListViewModel()
+                           {
+                               Id = r.Id,
+                               Name = r.Name,
+                               Text = r.Text,
+                               Date = r.Date,
+                               UserId = r.UserId,
+                               SubtopicId = r.SubtopicId,
+                               User = r.User,
+                               UsersWhoLike = r.UsersWhoLike
+                           }).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
             }
 
             return View("~/Views/Home/Index.cshtml", records);

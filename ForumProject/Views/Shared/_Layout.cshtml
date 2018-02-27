@@ -16,9 +16,9 @@
 
             <div id="signin_and_search">
                 <div id="header_elements">
-                    @if (Session["UserId"] != null)
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <a href="/Profile/ProfileView/@Session["UserId"]">@Session["UserName"]</a>
+                        <a href="/Profile/ProfileView/@{Html.RenderAction("GetId", "Profile");}">@{Html.RenderAction("GetName", "Profile");} </a>
                         <a href="/Auth/SignOut">Sign out</a>
                     }
                     else

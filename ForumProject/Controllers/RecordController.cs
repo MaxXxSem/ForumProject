@@ -7,6 +7,7 @@ using ForumProject.Models.ViewModels;
 using ForumProject.Models.Data;
 using ForumProject.Models.DTO;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
 
 namespace ForumProject.Controllers
 {
@@ -16,23 +17,17 @@ namespace ForumProject.Controllers
         Id - Subtopic id
         */
         [HttpGet]
+        [Authorize]
         public ActionResult AddRecord(int Id)
         {
             ViewBag.SubtopicId = Id;
             UserAddsRecordViewModel user = new UserAddsRecordViewModel();
 
-            //identify user
-            if (Session["UserId"] == null)
+            using (ForumDBEntities entities = new ForumDBEntities())
             {
-                return RedirectToAction("SignIn", "Auth");
-            }
-            else
-            {
-                using (ForumDBEntities entities = new ForumDBEntities())
-                {
-                    var userId = int.Parse(Session["UserId"].ToString());
-                    user.MainPhoto = entities.Users.Where(u => u.Id == userId).Select(u => u.MainPhoto).First();
-                }
+                var userId = entities.UserData.Find(User.Identity.GetUserId()).User.Id;
+                user.Id = userId;
+                user.MainPhoto = entities.Users.Where(u => u.Id == userId).Select(u => u.MainPhoto).First();
             }
 
             return View(user);
@@ -40,14 +35,15 @@ namespace ForumProject.Controllers
 
         /*Add record to database*/
         [HttpPost]
+        [Authorize]
         public ActionResult AddRecord(AddRecordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return new HttpStatusCodeResult(400, "Wrong data");
             }
-
-            if (Session["UserId"] != null)
+        
+            using (ForumDBEntities entities = new ForumDBEntities())
             {
                 Records record = new Records()
                 {
@@ -55,21 +51,14 @@ namespace ForumProject.Controllers
                     Text = model.Text,
                     SubtopicId = model.SubtopicId,
                     Date = DateTime.Now,
-                    UserId = int.Parse(Session["UserId"].ToString())
+                    UserId = entities.UserData.Find(User.Identity.GetUserId()).User.Id
                 };
 
-                using (ForumDBEntities entities = new ForumDBEntities())
-                {
-                    entities.Records.Add(record);
-                    entities.SaveChanges();
-                }
+                entities.Records.Add(record);
+                entities.SaveChanges();
+            }
 
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                return new HttpUnauthorizedResult("Unavailable action");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         /*certain records view
@@ -105,10 +94,9 @@ namespace ForumProject.Controllers
                                               }).ToList()
                               }).First();
 
-                if (Session["UserId"] != null)
+                if (User.Identity.IsAuthenticated)
                 { 
-                    var userId = int.Parse(Session["UserId"].ToString());
-                    var user = entities.Users.Find(userId);
+                    var user = entities.UserData.Find(User.Identity.GetUserId()).User;
                     ViewBag.LikedComments = user.LikedComments.ToList();
 
                     if (user.AccessLevel.Name.Equals("moderator"))
@@ -128,6 +116,7 @@ namespace ForumProject.Controllers
         //Add comment
         [HttpPost]
         [ActionName("RecordView")]
+        [Authorize]
         public ActionResult AddComment(AddCommentViewModel model)
         {
             if (!ModelState.IsValid)
@@ -135,33 +124,28 @@ namespace ForumProject.Controllers
                 return new HttpStatusCodeResult(400, "Wrong input");
             }
 
-            if (Session["UserId"] == null)
+            Comments comment;
+            using (ForumDBEntities entities = new ForumDBEntities())
             {
-                return RedirectToAction("SignIn", "Auth");
-            }
-            else
-            {
-                Comments comment = new Comments()
+                comment = new Comments()
                 {
                     Text = model.Text,
                     RecordId = model.RecordId,
                     Date = DateTime.Now,
-                    UserId = int.Parse(Session["UserId"].ToString())
+                    UserId = entities.UserData.Find(User.Identity.GetUserId()).User.Id
                 };
 
-                using (ForumDBEntities entities = new ForumDBEntities())
-                {
-                    entities.Comments.Add(comment);
-                    entities.SaveChanges();
-                }
-
-                return RedirectToAction("RecordView", "Record", comment.RecordId);      //to avoid resending form after page reloading
+                entities.Comments.Add(comment);
+                entities.SaveChanges();
             }
+
+            return RedirectToAction("RecordView", "Record", comment.RecordId);      //to avoid resending form after page reloading
         }
 
         /* Delete record
          * id - record id
          */
+        [Authorize]
         public ActionResult DeleteRecord(int id)
         {
             using (ForumDBEntities entities = new ForumDBEntities())
@@ -177,6 +161,7 @@ namespace ForumProject.Controllers
         /* Delete comment
          * id - comment id
          */
+        [Authorize]
         public ActionResult DeleteComment(int id)
         {
             using (ForumDBEntities entities = new ForumDBEntities())
@@ -187,6 +172,5 @@ namespace ForumProject.Controllers
 
             return new EmptyResult();
         }
-        
     }
 }

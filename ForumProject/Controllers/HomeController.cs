@@ -10,6 +10,9 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using PagedList;
 using PagedList.Mvc;
+using Microsoft.AspNet.Identity.Owin;
+using ForumProject.Models.Identity;
+using Microsoft.AspNet.Identity;
 
 namespace ForumProject.Controllers
 {
@@ -37,9 +40,9 @@ namespace ForumProject.Controllers
                                UsersWhoLike = r.UsersWhoLike
                            }).OrderByDescending(r => r.Date).ToPagedList(pageNum, PageInfo.pageSize);
 
-                if (Session["UserId"] != null)
+                if (User.Identity.IsAuthenticated)
                 {
-                    int userId = int.Parse(Session["UserId"].ToString());
+                    int userId = entities.UserData.Find(User.Identity.GetUserId()).User.Id;                //get user id
                     ViewBag.LikedRecords = (from r in entities.Users.Find(userId).LikedRecords                  //get liked by user records list
                                             select new RecordsListViewModel()
                                             {
@@ -59,7 +62,7 @@ namespace ForumProject.Controllers
             {
                 topics = entities.Topics.ToList();
                 ViewBag.Topics = topics;
-                ViewBag.PopularRecords = new Popular().MostPopularRecords();
+                ViewBag.PopularRecords = Popular.MostPopularRecords();
             }
 
             return PartialView();

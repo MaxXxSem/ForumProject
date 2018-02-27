@@ -17,15 +17,5 @@ namespace ForumProject
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
-
-        //Session end event
-        protected void Session_End(object sender, EventArgs e)
-        {
-            if (Session["UserId"] != null)
-            {
-                Session["UserId"] = null;
-                Session["UserName"] = null;
-            }
-        }
     }
 }

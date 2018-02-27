@@ -1,8 +1,6 @@
 USE ForumDB
 GO
 
--- REPLACE DELETED USER WITH DEFAULT ANONIM (Id = 37)
--- Connections: RecordsLikes -> Users, Comments -> Users, CommentsLikes -> Users, Subscribes -> Users
 CREATE TRIGGER User_DELETE
 ON Users
 INSTEAD OF DELETE
@@ -17,4 +15,9 @@ DELETE FROM Subscribes WHERE SubscriberId = @DeletedUserId OR PublisherId = @Del
 DELETE FROM Users WHERE Id = @DeletedUserId
 GO
 
-DELETE FROM Users WHERE Id = 36
+CREATE TRIGGER ApplicationUser_DELETE
+ON ApplicationUsers
+AFTER DELETE
+AS
+DELETE FROM Users WHERE Users.Id = (SELECT TOP(1) UserId FROM DELETED)
+GO
