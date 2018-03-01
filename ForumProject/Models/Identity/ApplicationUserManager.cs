@@ -15,7 +15,17 @@ namespace ForumProject.Models.Identity
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            return new ApplicationUserManager(new ApplicationUserStore(context.Get<ForumProject.Models.Data.ForumDBEntities>()));
+            var manager = new ApplicationUserManager(new ApplicationUserStore(context.Get<ForumProject.Models.Data.ForumDBEntities>()));
+            manager.PasswordValidator = new PasswordValidator
+            {
+                RequireDigit = false,
+                RequiredLength = 6,
+                RequireLowercase = false,
+                RequireNonLetterOrDigit = false,
+                RequireUppercase = false
+            };
+
+            return manager;
         }
     }
 }

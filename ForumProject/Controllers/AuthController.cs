@@ -106,15 +106,14 @@ namespace ForumProject.Controllers
             
             Users userData = new Users()
             {
-                Name = model.Name,
-                Login = model.Name,
-                Password = model.Password
+                Name = model.Name
             };
-            ApplicationUser user = new ApplicationUser() {UserName = model.Login, PasswordHash = model.Password, User = userData };
+            ApplicationUser user = new ApplicationUser() { UserName = model.Login, PasswordHash = model.Password, User = userData };
             var result = await UserManager.CreateAsync(user, model.Password);
-
+                                    
             if (result.Succeeded)
             {
+                UserManager.AddToRole(user.Id, "user");                                             //add user to role "user"
                 return RedirectToAction("SignIn");
             }
             else

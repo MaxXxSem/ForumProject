@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ForumProject.Models.Identity.ApplicationRole>
+
+@{ 
+    Layout = null;
+}
+
+
+<main>
+    <h2>Roles</h2>
+    <h3>Roles list</h3>
+    <div id="roles">
+        @foreach (var role in Model)
+        {
+            <div class="role">
+                <span>@role.Name</span>
+                <a href="/Role/EditRole/?name=@role.Name">Edit</a>
+                <a href="/Role/DeleteRole/?name=@role.Name">Delete</a>
+            </div>
+        }
+    </div>
+
+    <hr />
+
+    <h3>Add role</h3>
+    <div id="add_role">
+        <form method="post" action="/Role/AddRole">
+            <input type="text" name="name" />
+            <input type="submit" value="Add" />
+        </form>
+    </div>
+
+    <hr />
+
+    <h3>Add user to role</h3>
+    <div id="add_to_role">
+        <form method="post" action="/Role/AddToRole">
+            <input type="text" placeholder="user name" name="userName" />
+            <input type="text" placeholder="role name" name="roleName" />
+            <input type="submit" value="Add" />
+        </form>
+    </div>
+
+    <hr />
+
+    <h3>Remove user from role</h3>
+    <div id="remove_from_role">
+        <form method="post" action="/Role/RemoveFromRole">
+            <input type="text" placeholder="user name" name="userName" />
+            <input type="text" placeholder="role name" name="roleName" />
+            <input type="submit" value="Remove" />
+        </form>
+    </div>
+</main>

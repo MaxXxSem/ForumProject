@@ -10,19 +10,23 @@ using System.Data.Entity;
 
 namespace ForumProject.Models.Identity
 {
-    public class ApplicationUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>
+    public class ApplicationUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>, IUserRoleStore<ApplicationUser, string>
     {
-        private ForumDBEntities db;
-        UserStore<IdentityUser> userStore;
+        private UserStore<IdentityUser> userStore;
+        private ForumDBEntities DB
+        {
+            get { return userStore.Context as ForumDBEntities; }
+        }
+
+
         public ApplicationUserStore(ForumDBEntities entities)
         {
             if (entities == null)
             {
                 throw new ArgumentNullException();
             }
-
-            db = entities;
-            userStore = new UserStore<IdentityUser>(db);
+            
+            userStore = new UserStore<IdentityUser>(entities);
         }
 
         public Task CreateAsync(ApplicationUser user)
@@ -32,10 +36,9 @@ namespace ForumProject.Models.Identity
                 throw new ArgumentNullException();
             }
 
-            var db = userStore.Context as ForumDBEntities;
-            db.UserData.Add(user);
-            db.Configuration.ValidateOnSaveEnabled = false;
-            return db.SaveChangesAsync();
+            DB.UserData.Add(user);
+            DB.Configuration.ValidateOnSaveEnabled = false;
+            return DB.SaveChangesAsync();
         }
 
         public Task UpdateAsync(ApplicationUser user)
@@ -45,11 +48,10 @@ namespace ForumProject.Models.Identity
                 throw new ArgumentNullException();
             }
 
-            var db = userStore.Context as ForumDBEntities;
-            db.UserData.Attach(user);
-            db.Entry(user).State = EntityState.Modified;
-            db.Configuration.ValidateOnSaveEnabled = false;
-            return db.SaveChangesAsync();
+            DB.UserData.Attach(user);
+            DB.Entry(user).State = EntityState.Modified;
+            DB.Configuration.ValidateOnSaveEnabled = false;
+            return DB.SaveChangesAsync();
         }
 
         public Task DeleteAsync(ApplicationUser user)
@@ -59,10 +61,9 @@ namespace ForumProject.Models.Identity
                 throw new ArgumentNullException();
             }
 
-            var db = userStore.Context as ForumDBEntities;
-            db.UserData.Remove(user);
-            db.Configuration.ValidateOnSaveEnabled = false;
-            return db.SaveChangesAsync();
+            DB.UserData.Remove(user);
+            DB.Configuration.ValidateOnSaveEnabled = false;
+            return DB.SaveChangesAsync();
         }
 
         public Task<ApplicationUser> FindByIdAsync(string Id)
@@ -72,8 +73,7 @@ namespace ForumProject.Models.Identity
                 throw new ArgumentNullException();
             }
 
-            var db = userStore.Context as ForumDBEntities;
-            return db.UserData.Where(u => u.Id.ToLower() == Id.ToLower()).FirstOrDefaultAsync();
+            return DB.UserData.Where(u => u.Id.ToLower() == Id.ToLower()).FirstOrDefaultAsync();
         }
 
         public Task<ApplicationUser> FindByNameAsync(string name)
@@ -83,8 +83,7 @@ namespace ForumProject.Models.Identity
                 throw new ArgumentNullException();
             }
 
-            var db = userStore.Context as ForumDBEntities;
-            return db.UserData.Where(u => u.UserName == name).FirstOrDefaultAsync();
+            return DB.UserData.Where(u => u.UserName == name).FirstOrDefaultAsync();
         }
 
         public void Dispose()
@@ -173,6 +172,63 @@ namespace ForumProject.Models.Identity
                 SecurityStamp = user.SecurityStamp,
                 UserName = user.UserName
             };
+        }
+
+        public Task AddToRoleAsync(ApplicationUser user, string roleName)
+        {
+            if (user == null || string.IsNullOrEmpty(roleName))
+            {
+                throw new ArgumentNullException();
+            }
+
+            var role = DB.Roles.Where(r => r.Name == roleName).FirstOrDefault();
+            if (role != null && !user.Roles.Any(r => r.Name == roleName))
+            {
+                user.Roles.Add(role);
+                DB.Entry(user).State = EntityState.Modified;
+                return DB.SaveChangesAsync();
+            }
+
+            return Task.FromResult(0);
+        }
+
+        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
+        {
+            if (user == null || string.IsNullOrEmpty(roleName))
+            {
+                throw new ArgumentNullException();
+            }
+
+            var role = DB.Roles.Where(r => r.Name == roleName).FirstOrDefault();
+            if (role != null && user.Roles.Any(r => r.Name == roleName))
+            {
+                user.Roles.Remove(role);
+                return DB.SaveChangesAsync();
+            }
+
+            return Task.FromResult(0);
+        }
+
+        public Task<IList<string>> GetRolesAsync(ApplicationUser user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            IList<string> roles = user.Roles.Select(r => r.Name).ToList();
+            return Task.FromResult(roles);
+        }
+
+        public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
+        {
+            if (user == null || string.IsNullOrEmpty(roleName))
+            {
+                throw new ArgumentNullException();
+            }
+
+            bool result = user.Roles.Any(r => r.Name == roleName);
+            return Task.FromResult(result);
         }
     }
 }

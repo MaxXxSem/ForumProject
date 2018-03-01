@@ -8,6 +8,8 @@ using ForumProject.Models.Data;
 using ForumProject.Models.DTO;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using ForumProject.Models.Identity;
 
 namespace ForumProject.Controllers
 {
@@ -99,7 +101,8 @@ namespace ForumProject.Controllers
                     var user = entities.UserData.Find(User.Identity.GetUserId()).User;
                     ViewBag.LikedComments = user.LikedComments.ToList();
 
-                    if (user.AccessLevel.Name.Equals("moderator"))
+                    var userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();        //get UserManager
+                    if (userManager.IsInRole(User.Identity.GetUserId(), "admin"))                                   //check if admin
                     {
                         ViewBag.IsModerator = true;
                     }
@@ -145,7 +148,7 @@ namespace ForumProject.Controllers
         /* Delete record
          * id - record id
          */
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteRecord(int id)
         {
             using (ForumDBEntities entities = new ForumDBEntities())
@@ -161,7 +164,7 @@ namespace ForumProject.Controllers
         /* Delete comment
          * id - comment id
          */
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public ActionResult DeleteComment(int id)
         {
             using (ForumDBEntities entities = new ForumDBEntities())

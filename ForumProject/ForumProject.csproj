@@ -230,8 +230,19 @@
     <Compile Include="Migrations\201802282227566_Fixes.Designer.cs">
       <DependentUpon>201802282227566_Fixes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803011755236_RoleId.cs" />
+    <Compile Include="Migrations\201803011755236_RoleId.Designer.cs">
+      <DependentUpon>201803011755236_RoleId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803011830550_StandartIdentityRole.cs" />
+    <Compile Include="Migrations\201803011830550_StandartIdentityRole.Designer.cs">
+      <DependentUpon>201803011830550_StandartIdentityRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803012053026_AccessLevelRemoved.cs" />
+    <Compile Include="Migrations\201803012053026_AccessLevelRemoved.Designer.cs">
+      <DependentUpon>201803012053026_AccessLevelRemoved.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Data\AccessLevel.cs" />
     <Compile Include="Models\Data\BlockedUsers.cs" />
     <Compile Include="Models\Data\Comments.cs" />
     <Compile Include="Models\Data\ForumDBEntities.cs" />
@@ -245,7 +256,6 @@
     <Compile Include="Models\DTO\SubscribtionsDTO.cs" />
     <Compile Include="Models\Identity\ApplicationRole.cs" />
     <Compile Include="Models\Identity\ApplicationRoleManager.cs" />
-    <Compile Include="Models\Identity\ApplicationRoleStore.cs" />
     <Compile Include="Models\Identity\ApplicationUser.cs" />
     <Compile Include="Models\Identity\ApplicationUserManager.cs" />
     <Compile Include="Models\Identity\ApplicationUserStore.cs" />
@@ -255,7 +265,6 @@
     <Compile Include="Models\ProfileInfo.cs" />
     <Compile Include="Models\ViewModels\AddCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\AddRecordViewModel.cs" />
-    <Compile Include="Models\ViewModels\AddRoleViewModel.cs" />
     <Compile Include="Models\ViewModels\EditRoleViewModel.cs" />
     <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
     <Compile Include="Models\ViewModels\RecordsListViewModel.cs" />
@@ -342,8 +351,8 @@
     <Content Include="Views\Profile\Delete.cshtml" />
     <Content Include="Views\Profile\Subscribe.cshtml" />
     <Content Include="Views\Profile\Unsubscribe.cshtml" />
-    <Content Include="Views\Role\AddRole.cshtml" />
     <Content Include="Views\Role\EditRole.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -390,6 +399,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802282227566_Fixes.resx">
       <DependentUpon>201802282227566_Fixes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803011755236_RoleId.resx">
+      <DependentUpon>201803011755236_RoleId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803011830550_StandartIdentityRole.resx">
+      <DependentUpon>201803011830550_StandartIdentityRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803012053026_AccessLevelRemoved.resx">
+      <DependentUpon>201803012053026_AccessLevelRemoved.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

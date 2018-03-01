@@ -12,8 +12,7 @@ namespace ForumProject.Models.Data
             : base("name=ForumDBEntities")
         {
         }
-
-        public virtual DbSet<AccessLevel> AccessLevel { get; set; }
+        
         public virtual DbSet<BlockedUsers> BlockedUsers { get; set; }
         public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<LevelInfo> LevelInfo { get; set; }
@@ -26,11 +25,6 @@ namespace ForumProject.Models.Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccessLevel>()
-                .HasMany(e => e.Users)
-                .WithRequired(e => e.AccessLevel)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Comments>()
                 .HasMany(e => e.UsersWhoLike)
                 .WithMany(e => e.LikedComments)
@@ -56,10 +50,6 @@ namespace ForumProject.Models.Data
                 .HasMany(e => e.Subtopics)
                 .WithRequired(e => e.Topic)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Users>()
-                .Property(e => e.Password)
-                .IsFixedLength();
 
             modelBuilder.Entity<Users>()
                 .HasMany(e => e.Comments)

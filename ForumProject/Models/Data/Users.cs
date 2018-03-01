@@ -14,7 +14,6 @@ namespace ForumProject.Models.Data
         public Users()
         {
             LevelId = 1;
-            AccessLevelId = 1;
             MainPhoto = "anonim.png";
 
             BlockedUsers = new HashSet<BlockedUsers>();
@@ -32,23 +31,11 @@ namespace ForumProject.Models.Data
         [StringLength(64)]
         public string Name { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Login { get; set; }
-
-        [Required]
-        [StringLength(64)]
-        public string Password { get; set; }
-
         public int LevelId { get; set; }
-
-        public int AccessLevelId { get; set; }
 
         [Required]
         [StringLength(50)]
         public string MainPhoto { get; set; }
-
-        public virtual AccessLevel AccessLevel { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BlockedUsers> BlockedUsers { get; set; }

@@ -8,26 +8,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ForumProject.Models.Identity
 {
-    public class ApplicationRole : IRole<Guid>
+    public class ApplicationRole : IdentityRole
     {
-        public ApplicationRole()
-        {
-            Id = Guid.NewGuid();
-            Users = new HashSet<ApplicationUser>();
-        }
+        public ApplicationRole() { }
 
-        public ApplicationRole(string name) : this()
-        {
-            Name = name;
-        }
-
-        [Key]
-        public Guid Id { get; set; }
-
-        [Required]
-        [StringLength(64)]
-        public virtual string Name { get; set; }
-
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public new ICollection<ApplicationUser> Users { get; set; }
     }
 }

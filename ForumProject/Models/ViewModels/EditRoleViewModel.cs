@@ -8,7 +8,7 @@ namespace ForumProject.Models.ViewModels
 {
     public class EditRoleViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(64)]

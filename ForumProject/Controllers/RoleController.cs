@@ -7,10 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ForumProject.Models.Data;
 
 namespace ForumProject.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class RoleController : Controller
     {
         private ApplicationRoleManager RoleManager
@@ -18,35 +19,40 @@ namespace ForumProject.Controllers
             get { return HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
         }
 
-        public ActionResult AddRole()
+        private ApplicationUserManager UserManager
         {
-            return View();
+            get { return HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+        }
+
+        //start page
+        public ActionResult Index()
+        {
+            IEnumerable<ApplicationRole> roles;
+            using (ForumDBEntities entities = new ForumDBEntities())
+            {
+                roles = entities.Roles.ToList();
+            }
+
+            return View(roles);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddRole(AddRoleViewModel model)
+        public async Task<ActionResult> AddRole(string name)
         {
-            if (!ModelState.IsValid)
+            if (String.IsNullOrEmpty(name))
             {
-                return View(model);
+                return new HttpStatusCodeResult(400, "Wrong data");
             }
 
-            var result = await RoleManager.CreateAsync(new ApplicationRole()
-            {
-                Name = model.Name
-            });
+            var role = new ApplicationRole() { Name = name };
+            var result = await RoleManager.CreateAsync(role);
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Can't add role");
+                return RedirectToAction("Index");
             }
 
-            return View(model);
+            return new HttpStatusCodeResult(400, "Can't add role");
         }
 
         public async Task<ActionResult> EditRole(string name)
@@ -61,7 +67,8 @@ namespace ForumProject.Controllers
             {
                 var edit = new EditRoleViewModel()
                 {
-                    Name = name
+                    Id = role.Result.Id,
+                    Name = role.Result.Name
                 };
 
                 return View(edit);
@@ -87,7 +94,7 @@ namespace ForumProject.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -97,8 +104,6 @@ namespace ForumProject.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteRole(string name)
         {
             if (String.IsNullOrEmpty(name))
@@ -112,11 +117,59 @@ namespace ForumProject.Controllers
                 var result = await RoleManager.DeleteAsync(role);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index");
                 }
             }
 
             return new HttpStatusCodeResult(400, "Can't delete role");
+        }
+
+        //Add user to role
+        [HttpPost]
+        public async Task<ActionResult> AddToRole(string userName, string roleName)
+        {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(roleName))
+            {
+                return new HttpStatusCodeResult(400, "Wrond data");
+            }
+
+            ApplicationUser user = await UserManager.FindByNameAsync(userName);
+            ApplicationRole role = await RoleManager.FindByNameAsync(roleName);
+
+            if (user != null && role != null)
+            {
+                var result = await UserManager.AddToRoleAsync(user.Id, role.Name);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return new HttpStatusCodeResult(400, "Operation can't be performed");
+        }
+
+        //remove user from role
+        [HttpPost]
+        public async Task<ActionResult> RemoveFromRole(string userName, string roleName)
+        {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(roleName))
+            {
+                return new HttpStatusCodeResult(400, "Wrong data");
+            }
+
+            var user = await UserManager.FindByNameAsync(userName);
+            var role = await RoleManager.FindByNameAsync(roleName);
+
+            if (user != null && role != null)
+            {
+                var result = await UserManager.RemoveFromRoleAsync(user.Id, role.Name);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return new HttpStatusCodeResult(400, "Operation can't be performed");
         }
     }
 }
