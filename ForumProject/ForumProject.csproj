@@ -189,6 +189,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RecordController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -221,6 +222,14 @@
     <Compile Include="Migrations\201802262307578_UserDataUsersRelation.Designer.cs">
       <DependentUpon>201802262307578_UserDataUsersRelation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802282136543_AddRoles.cs" />
+    <Compile Include="Migrations\201802282136543_AddRoles.Designer.cs">
+      <DependentUpon>201802282136543_AddRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802282227566_Fixes.cs" />
+    <Compile Include="Migrations\201802282227566_Fixes.Designer.cs">
+      <DependentUpon>201802282227566_Fixes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Data\AccessLevel.cs" />
     <Compile Include="Models\Data\BlockedUsers.cs" />
@@ -234,6 +243,9 @@
     <Compile Include="Models\DTO\CommentDTO.cs" />
     <Compile Include="Models\DTO\ProfileRecordDTO.cs" />
     <Compile Include="Models\DTO\SubscribtionsDTO.cs" />
+    <Compile Include="Models\Identity\ApplicationRole.cs" />
+    <Compile Include="Models\Identity\ApplicationRoleManager.cs" />
+    <Compile Include="Models\Identity\ApplicationRoleStore.cs" />
     <Compile Include="Models\Identity\ApplicationUser.cs" />
     <Compile Include="Models\Identity\ApplicationUserManager.cs" />
     <Compile Include="Models\Identity\ApplicationUserStore.cs" />
@@ -243,6 +255,8 @@
     <Compile Include="Models\ProfileInfo.cs" />
     <Compile Include="Models\ViewModels\AddCommentViewModel.cs" />
     <Compile Include="Models\ViewModels\AddRecordViewModel.cs" />
+    <Compile Include="Models\ViewModels\AddRoleViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditRoleViewModel.cs" />
     <Compile Include="Models\ViewModels\ProfileViewModel.cs" />
     <Compile Include="Models\ViewModels\RecordsListViewModel.cs" />
     <Compile Include="Models\ViewModels\RecordViewModel.cs" />
@@ -328,6 +342,8 @@
     <Content Include="Views\Profile\Delete.cshtml" />
     <Content Include="Views\Profile\Subscribe.cshtml" />
     <Content Include="Views\Profile\Unsubscribe.cshtml" />
+    <Content Include="Views\Role\AddRole.cshtml" />
+    <Content Include="Views\Role\EditRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -369,7 +385,14 @@
     <EmbeddedResource Include="Migrations\201802262307578_UserDataUsersRelation.resx">
       <DependentUpon>201802262307578_UserDataUsersRelation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802282136543_AddRoles.resx">
+      <DependentUpon>201802282136543_AddRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802282227566_Fixes.resx">
+      <DependentUpon>201802282227566_Fixes.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

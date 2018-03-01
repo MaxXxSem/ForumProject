@@ -13,7 +13,7 @@ namespace ForumProject.Models.Identity
     public class ApplicationUserStore : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>
     {
         private ForumDBEntities db;
-        UserStore<IdentityUser> userStore = new UserStore<IdentityUser>(new ForumDBEntities());
+        UserStore<IdentityUser> userStore;
         public ApplicationUserStore(ForumDBEntities entities)
         {
             if (entities == null)
@@ -22,6 +22,7 @@ namespace ForumProject.Models.Identity
             }
 
             db = entities;
+            userStore = new UserStore<IdentityUser>(db);
         }
 
         public Task CreateAsync(ApplicationUser user)

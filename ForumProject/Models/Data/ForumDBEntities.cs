@@ -22,6 +22,7 @@ namespace ForumProject.Models.Data
         public virtual DbSet<Topics> Topics { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<ApplicationUser> UserData { get; set; }
+        public virtual DbSet<ApplicationRole> Roles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

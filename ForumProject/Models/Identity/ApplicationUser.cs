@@ -13,6 +13,7 @@ namespace ForumProject.Models.Identity
         public ApplicationUser()
         {
             Id = Guid.NewGuid().ToString();                     //New id
+            Roles = new HashSet<ApplicationRole>();
         }
 
         public ApplicationUser(string userName) : this()
@@ -36,5 +37,7 @@ namespace ForumProject.Models.Identity
         public byte[] RowVersion { get; set; }
 
         public virtual Users User { get; set; }
+
+        public virtual ICollection<ApplicationRole> Roles { get; set; }
     }
 }
